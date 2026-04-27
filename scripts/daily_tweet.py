@@ -95,7 +95,7 @@ def main():
     lines.append(f"👥 +{new_traders} new traders | {total_traders:,} total")
 
     if profit > 0:
-        lines.append(f"📈 ${profit:,.0f} in trader profits today")
+        lines.append(f"📈 +${profit:,.0f} in trader profits")
 
     if passes > 0:
         lines.append(f"✅ {passes} traders passed their challenge")
