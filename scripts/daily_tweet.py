@@ -2,9 +2,11 @@ import os
 import sys
 import requests
 import tweepy
+from pathlib import Path
 from datetime import datetime, timedelta, timezone
 
 BASE_URL = "https://www.propr.xyz"
+IMAGES_DIR = Path(__file__).parent.parent / "images"
 
 
 def get_yesterday():
@@ -17,13 +19,29 @@ def fetch(path):
     return resp.json()
 
 
-def get_twitter_client():
-    return tweepy.Client(
+def get_clients():
+    auth = tweepy.OAuth1UserHandler(
+        os.environ["TWITTER_API_KEY"],
+        os.environ["TWITTER_API_SECRET"],
+        os.environ["TWITTER_ACCESS_TOKEN"],
+        os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
+    )
+    api = tweepy.API(auth)
+    client = tweepy.Client(
         consumer_key=os.environ["TWITTER_API_KEY"],
         consumer_secret=os.environ["TWITTER_API_SECRET"],
         access_token=os.environ["TWITTER_ACCESS_TOKEN"],
         access_token_secret=os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
     )
+    return client, api
+
+
+def upload_image(api, name):
+    path = IMAGES_DIR / f"{name}.png"
+    if not path.exists():
+        return None
+    media = api.media_upload(filename=str(path))
+    return media.media_id_string
 
 
 def find_day(history, date):
@@ -77,13 +95,15 @@ def main():
     if passes > 0:
         lines.append(f"✅ {passes} traders passed their challenge")
 
-    lines += ["", f"Get funded 👉 app.propr.xyz/r/75agXwd6"]
+    lines += ["", "Get funded 👉 app.propr.xyz/r/75agXwd6"]
 
     tweet = "\n".join(lines)
     print(f"Posting tweet:\n{tweet}\n")
 
-    client = get_twitter_client()
-    client.create_tweet(text=tweet)
+    client, api = get_clients()
+    media_id = upload_image(api, "daily")
+    kwargs = {"media_ids": [media_id]} if media_id else {}
+    client.create_tweet(text=tweet, **kwargs)
     print(f"Daily tweet posted for {yesterday}")
 
 

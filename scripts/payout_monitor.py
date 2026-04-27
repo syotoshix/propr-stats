@@ -3,12 +3,14 @@ import os
 import time
 import requests
 import tweepy
+from collections import Counter
 from pathlib import Path
 
 BASE_URL = "https://www.propr.xyz"
 PAYOUT_STATE_FILE = Path(__file__).parent.parent / "state" / "last_payout_id.txt"
 ACTIVITY_STATE_FILE = Path(__file__).parent.parent / "state" / "last_activity_id.txt"
 CHALLENGES_FILE = Path(__file__).parent.parent / "data" / "challenges.json"
+IMAGES_DIR = Path(__file__).parent.parent / "images"
 
 
 def fetch(path):
@@ -17,13 +19,29 @@ def fetch(path):
     return resp.json()
 
 
-def get_twitter_client():
-    return tweepy.Client(
+def get_clients():
+    auth = tweepy.OAuth1UserHandler(
+        os.environ["TWITTER_API_KEY"],
+        os.environ["TWITTER_API_SECRET"],
+        os.environ["TWITTER_ACCESS_TOKEN"],
+        os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
+    )
+    api = tweepy.API(auth)
+    client = tweepy.Client(
         consumer_key=os.environ["TWITTER_API_KEY"],
         consumer_secret=os.environ["TWITTER_API_SECRET"],
         access_token=os.environ["TWITTER_ACCESS_TOKEN"],
         access_token_secret=os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
     )
+    return client, api
+
+
+def upload_image(api, name):
+    path = IMAGES_DIR / f"{name}.png"
+    if not path.exists():
+        return None
+    media = api.media_upload(filename=str(path))
+    return media.media_id_string
 
 
 def load_challenges():
@@ -38,7 +56,13 @@ def read_state(path):
     return content if content else None
 
 
-def check_payouts(client):
+def post_tweet(client, api, text, image_name):
+    media_id = upload_image(api, image_name)
+    kwargs = {"media_ids": [media_id]} if media_id else {}
+    client.create_tweet(text=text, **kwargs)
+
+
+def check_payouts(client, api):
     data = fetch("/api/transparency/payouts")
     recent = data["recent"]
     stats = data["stats"]
@@ -69,7 +93,7 @@ def check_payouts(client):
                 time.sleep(60)
             tweet = format_payout_tweet(payout, stats)
             print(f"Posting payout tweet:\n{tweet}\n")
-            client.create_tweet(text=tweet)
+            post_tweet(client, api, tweet, "payout")
             print(f"Posted: {payout['id']} — ${payout['amount']}")
         PAYOUT_STATE_FILE.write_text(recent[0]["id"])
 
@@ -79,7 +103,6 @@ def format_payout_tweet(payout, stats):
     trader = payout["anon_user"]
     total_paid = stats["totalPaid"]
     total_count = stats["totalCount"]
-    chain_id = payout["chain_id"]
     tx_hash = payout["tx_hash"]
     badge = payout.get("badge", "")
 
@@ -98,7 +121,7 @@ def format_payout_tweet(payout, stats):
     return "\n".join(lines)
 
 
-def check_passes(client, challenges):
+def check_passes(client, api, challenges):
     data = fetch("/api/propr/v1/stats/activity?limit=20&types=passed")
     events = data["events"]
 
@@ -123,9 +146,9 @@ def check_passes(client, challenges):
         print("No new pass events")
         return
 
-    tweet = format_pass_tweet(new_passes, challenges)
+    tweet, image_name = format_pass_tweet(new_passes, challenges)
     print(f"Posting pass tweet:\n{tweet}\n")
-    client.create_tweet(text=tweet)
+    post_tweet(client, api, tweet, image_name)
     print(f"Posted pass tweet for {len(new_passes)} event(s)")
 
     ACTIVITY_STATE_FILE.write_text(events[0]["attemptId"])
@@ -143,18 +166,18 @@ def format_pass_tweet(new_passes, challenges):
             funded = challenge["fundedBalance"]
             price = challenge["price"]
             price_str = f"${price}" if price else "free"
-            return (
+            tweet = (
                 f"✅ A trader just passed the @ProprXYZ {name} Challenge!\n\n"
                 f"{price_str} challenge 👉 ${funded:,} funded account"
             )
+            return tweet, challenge["slug"].split("-")[0]
         elif challenge and challenge["fundedBalance"] is None:
             name = challenge["name"]
-            return f"✅ A trader just passed the @ProprXYZ {name}!\n\nTime to get funded! 💰"
+            return f"✅ A trader just passed the @ProprXYZ {name}!\n\nTime to get funded! 💰", "free-trial"
         else:
-            return f"✅ A trader just passed their @ProprXYZ challenge!"
+            return "✅ A trader just passed their @ProprXYZ challenge!", "mixed"
 
     # Multiple passes — group by challenge
-    from collections import Counter
     challenge_counts = Counter(event["challengeId"] for event in new_passes)
     unique_challenges = list(challenge_counts.keys())
 
@@ -167,13 +190,14 @@ def format_pass_tweet(new_passes, challenges):
             funded = challenge["fundedBalance"]
             price = challenge["price"]
             price_str = f"${price}" if price else "free"
-            return (
+            tweet = (
                 f"✅ {count} traders just passed their @ProprXYZ {name} Challenge\n\n"
                 f"{price_str} challenge 👉 ${funded:,} funded account — each"
             )
+            return tweet, challenge["slug"].split("-")[0]
         else:
             name = challenge["name"] if challenge else "challenge"
-            return f"✅ {count} traders just passed their @ProprXYZ {name}"
+            return f"✅ {count} traders just passed their @ProprXYZ {name}", "free-trial"
 
     # Mixed challenges — show breakdown sorted by funded balance descending
     lines = [f"✅ {count} traders just passed their @ProprXYZ challenge", ""]
@@ -189,7 +213,6 @@ def format_pass_tweet(new_passes, challenges):
         if challenge:
             name = challenge["name"]
             funded = challenge["fundedBalance"]
-            split = challenge["profitSplit"]
             if funded is not None:
                 lines.append(f"{n}x {name} 👉 ${funded:,} funded")
             else:
@@ -197,15 +220,15 @@ def format_pass_tweet(new_passes, challenges):
         else:
             lines.append(f"{n}x Unknown Challenge")
 
-    return "\n".join(lines)
+    return "\n".join(lines), "mixed"
 
 
 def main():
     challenges = load_challenges()
-    client = get_twitter_client()
-    check_payouts(client)
+    client, api = get_clients()
+    check_payouts(client, api)
     time.sleep(30)
-    check_passes(client, challenges)
+    check_passes(client, api, challenges)
 
 
 if __name__ == "__main__":
