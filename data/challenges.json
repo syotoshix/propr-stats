@@ -1,0 +1,58 @@
+{
+  "urn:prp-challenge:bpWkSg3DyaY1": {
+    "name": "Free Trial",
+    "slug": "free-trial",
+    "challengeBalance": 5000,
+    "price": 0,
+    "fundedBalance": null,
+    "profitSplit": null
+  },
+  "urn:prp-challenge:Z7VstdM1sm47": {
+    "name": "Starter",
+    "slug": "starter-t",
+    "challengeBalance": 5000,
+    "price": 50,
+    "fundedBalance": 5000,
+    "profitSplit": 80
+  },
+  "urn:prp-challenge:33x6tMd2qY3D": {
+    "name": "Starter",
+    "slug": "starter-s",
+    "challengeBalance": 5000,
+    "price": 60,
+    "fundedBalance": 10000,
+    "profitSplit": 80
+  },
+  "urn:prp-challenge:xTtSatLC61Zo": {
+    "name": "Explorer",
+    "slug": "explorer-s",
+    "challengeBalance": 10000,
+    "price": 110,
+    "fundedBalance": 10000,
+    "profitSplit": 80
+  },
+  "urn:prp-challenge:oeUXfaAFPLY1": {
+    "name": "Bronze",
+    "slug": "bronze-s",
+    "challengeBalance": 25000,
+    "price": 275,
+    "fundedBalance": 25000,
+    "profitSplit": 80
+  },
+  "urn:prp-challenge:jmhuCj2f6eK9": {
+    "name": "Silver",
+    "slug": "silver-s",
+    "challengeBalance": 50000,
+    "price": 495,
+    "fundedBalance": 50000,
+    "profitSplit": 80
+  },
+  "urn:prp-challenge:3AB9vfCqNL6M": {
+    "name": "Silver",
+    "slug": "silver-t",
+    "challengeBalance": 50000,
+    "price": null,
+    "fundedBalance": 50000,
+    "profitSplit": 80
+  }
+}
