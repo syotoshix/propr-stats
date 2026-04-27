@@ -47,11 +47,27 @@
     "fundedBalance": 50000,
     "profitSplit": 80
   },
+  "urn:prp-challenge:ojsP6VAVRKqw": {
+    "name": "Explorer",
+    "slug": "explorer-t",
+    "challengeBalance": 10000,
+    "price": 100,
+    "fundedBalance": 10000,
+    "profitSplit": 80
+  },
+  "urn:prp-challenge:qEuxcrWrt9aa": {
+    "name": "Bronze",
+    "slug": "bronze-t",
+    "challengeBalance": 25000,
+    "price": 250,
+    "fundedBalance": 25000,
+    "profitSplit": 80
+  },
   "urn:prp-challenge:3AB9vfCqNL6M": {
     "name": "Silver",
     "slug": "silver-t",
     "challengeBalance": 50000,
-    "price": null,
+    "price": 450,
     "fundedBalance": 50000,
     "profitSplit": 80
   }
