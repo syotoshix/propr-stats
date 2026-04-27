@@ -48,13 +48,19 @@ def main():
     pnl_data = fetch("/api/propr/v1/stats/pnl/aggregated?days=2")
     pnl_day = find_day(pnl_data["overall"], yesterday)
 
-    pass_data = fetch("/api/propr/v1/stats/challenges/pass-rate/history?days=2")
-    pass_day = find_day(pass_data["overall"], yesterday)
+    pass_data = fetch("/api/propr/v1/stats/challenges/pass-rate/history?days=3")
+    pass_yesterday = find_day(pass_data["overall"], yesterday)
+    day_before = (datetime.now(timezone.utc) - timedelta(days=2)).strftime("%Y-%m-%d")
+    pass_day_before = find_day(pass_data["overall"], day_before)
 
     new_traders = trader_day["newTraders"]
     total_traders = trader_day["totalTraders"]
     profit = pnl_day["profit"] if pnl_day else 0
-    passes = pass_day["passed"] if pass_day else 0
+    passes = (
+        (pass_yesterday["passed"] - pass_day_before["passed"])
+        if pass_yesterday and pass_day_before
+        else (pass_yesterday["passed"] if pass_yesterday else 0)
+    )
 
     date_str = datetime.strptime(yesterday, "%Y-%m-%d").strftime("%b %-d")
 

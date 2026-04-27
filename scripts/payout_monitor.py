@@ -92,10 +92,8 @@ def format_payout_tweet(payout, stats):
 
     lines += ["", f"${total_paid:,.2f} paid to {total_count} funded traders so far"]
 
-    if chain_id == 1:
-        lines.append(f"https://etherscan.io/tx/{tx_hash}")
-    else:
-        lines.append(f"Tx: {tx_hash}")
+    tx_short = f"{tx_hash[:6]}......{tx_hash[-6:]}"
+    lines.append(f"Tx: {tx_short}")
 
     return "\n".join(lines)
 
@@ -144,24 +142,16 @@ def format_pass_tweet(new_passes, challenges):
             name = challenge["name"]
             funded = challenge["fundedBalance"]
             price = challenge["price"]
-            split = challenge["profitSplit"]
             price_str = f"${price}" if price else "free"
             return (
                 f"✅ A trader just passed the @ProprXYZ {name} Challenge!\n\n"
-                f"{price_str} challenge → ${funded:,} funded account | {split}% split\n\n"
-                f"Get funded 👉 app.propr.xyz/r/75agXwd6"
+                f"{price_str} challenge 👉 ${funded:,} funded account"
             )
         elif challenge and challenge["fundedBalance"] is None:
             name = challenge["name"]
-            return (
-                f"✅ A trader just passed the @ProprXYZ {name}!\n\n"
-                f"Ready to go funded? 👉 app.propr.xyz/r/75agXwd6"
-            )
+            return f"✅ A trader just passed the @ProprXYZ {name}!\n\nTime to get funded! 💰"
         else:
-            return (
-                f"✅ A trader just passed their @ProprXYZ challenge!\n\n"
-                f"Get funded 👉 app.propr.xyz/r/75agXwd6"
-            )
+            return f"✅ A trader just passed their @ProprXYZ challenge!"
 
     # Multiple passes — group by challenge
     from collections import Counter
@@ -175,18 +165,15 @@ def format_pass_tweet(new_passes, challenges):
         if challenge and challenge["fundedBalance"] is not None:
             name = challenge["name"]
             funded = challenge["fundedBalance"]
-            split = challenge["profitSplit"]
+            price = challenge["price"]
+            price_str = f"${price}" if price else "free"
             return (
                 f"✅ {count} traders just passed their @ProprXYZ {name} Challenge\n\n"
-                f"${funded:,} funded account | {split}% split — each\n\n"
-                f"Get funded 👉 app.propr.xyz/r/75agXwd6"
+                f"{price_str} challenge 👉 ${funded:,} funded account — each"
             )
         else:
             name = challenge["name"] if challenge else "challenge"
-            return (
-                f"✅ {count} traders just passed their @ProprXYZ {name}\n\n"
-                f"Get funded 👉 app.propr.xyz/r/75agXwd6"
-            )
+            return f"✅ {count} traders just passed their @ProprXYZ {name}"
 
     # Mixed challenges — show breakdown sorted by funded balance descending
     lines = [f"✅ {count} traders just passed their @ProprXYZ challenge", ""]
@@ -204,13 +191,12 @@ def format_pass_tweet(new_passes, challenges):
             funded = challenge["fundedBalance"]
             split = challenge["profitSplit"]
             if funded is not None:
-                lines.append(f"{n}x {name} → ${funded:,} funded | {split}% split")
+                lines.append(f"{n}x {name} 👉 ${funded:,} funded")
             else:
                 lines.append(f"{n}x {name}")
         else:
             lines.append(f"{n}x Unknown Challenge")
 
-    lines += ["", "Get funded 👉 app.propr.xyz/r/75agXwd6"]
     return "\n".join(lines)
 
 
