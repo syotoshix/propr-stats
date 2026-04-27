@@ -7,6 +7,7 @@ from datetime import datetime, timedelta, timezone
 
 BASE_URL = "https://www.propr.xyz"
 IMAGES_DIR = Path(__file__).parent.parent / "images"
+DAILY_STATE_FILE = Path(__file__).parent.parent / "state" / "last_daily_date.txt"
 
 
 def get_yesterday():
@@ -50,6 +51,10 @@ def find_day(history, date):
 
 def main():
     yesterday = get_yesterday()
+
+    if DAILY_STATE_FILE.exists() and DAILY_STATE_FILE.read_text().strip() == yesterday:
+        print(f"Daily tweet already posted for {yesterday}, skipping")
+        sys.exit(0)
 
     traders_data = fetch("/api/propr/v1/stats/traders/history?days=2")
     trader_day = find_day(traders_data["history"], yesterday)
@@ -104,6 +109,7 @@ def main():
     media_id = upload_image(api, "daily")
     kwargs = {"media_ids": [media_id]} if media_id else {}
     client.create_tweet(text=tweet, **kwargs)
+    DAILY_STATE_FILE.write_text(yesterday)
     print(f"Daily tweet posted for {yesterday}")
 
 
