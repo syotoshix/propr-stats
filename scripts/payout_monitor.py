@@ -2,46 +2,32 @@ import json
 import os
 import time
 import requests
-import tweepy
 from collections import Counter
 from pathlib import Path
+from requests_oauthlib import OAuth1Session
 
 BASE_URL = "https://www.propr.xyz"
 PAYOUT_STATE_FILE = Path(__file__).parent.parent / "state" / "last_payout_id.txt"
 ACTIVITY_STATE_FILE = Path(__file__).parent.parent / "state" / "last_activity_id.txt"
 CHALLENGES_FILE = Path(__file__).parent.parent / "data" / "challenges.json"
 IMAGES_DIR = Path(__file__).parent.parent / "images"
+TWITTER_BASE = "https://api.twitter.com/2"
+TWITTER_UPLOAD = "https://upload.twitter.com/1/media/upload"
+
+
+def get_session():
+    return OAuth1Session(
+        os.environ["TWITTER_API_KEY"],
+        os.environ["TWITTER_API_SECRET"],
+        os.environ["TWITTER_ACCESS_TOKEN"],
+        os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
+    )
 
 
 def fetch(path):
     resp = requests.get(f"{BASE_URL}{path}", timeout=10)
     resp.raise_for_status()
     return resp.json()
-
-
-def get_clients():
-    auth = tweepy.OAuth1UserHandler(
-        os.environ["TWITTER_API_KEY"],
-        os.environ["TWITTER_API_SECRET"],
-        os.environ["TWITTER_ACCESS_TOKEN"],
-        os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
-    )
-    api = tweepy.API(auth)
-    client = tweepy.Client(
-        consumer_key=os.environ["TWITTER_API_KEY"],
-        consumer_secret=os.environ["TWITTER_API_SECRET"],
-        access_token=os.environ["TWITTER_ACCESS_TOKEN"],
-        access_token_secret=os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
-    )
-    return client, api
-
-
-def upload_image(api, name):
-    path = IMAGES_DIR / f"{name}.png"
-    if not path.exists():
-        return None
-    media = api.media_upload(filename=str(path))
-    return media.media_id_string
 
 
 def load_challenges():
@@ -56,13 +42,28 @@ def read_state(path):
     return content if content else None
 
 
-def post_tweet(client, api, text, image_name):
-    media_id = upload_image(api, image_name)
-    kwargs = {"media_ids": [media_id]} if media_id else {}
-    client.create_tweet(text=text, **kwargs)
+def upload_media(session, image_name):
+    path = IMAGES_DIR / f"{image_name}.png"
+    if not path.exists():
+        return None
+    with open(path, "rb") as f:
+        resp = session.post(TWITTER_UPLOAD, files={"media": f})
+    resp.raise_for_status()
+    return resp.json()["media_id_string"]
 
 
-def check_payouts(client, api):
+def post_tweet(session, text, image_name=None):
+    body = {"text": text}
+    if image_name:
+        media_id = upload_media(session, image_name)
+        if media_id:
+            body["media"] = {"media_ids": [media_id]}
+    resp = session.post(f"{TWITTER_BASE}/tweets", json=body)
+    resp.raise_for_status()
+    return resp.json()["data"]["id"]
+
+
+def check_payouts(session):
     data = fetch("/api/transparency/payouts")
     recent = data["recent"]
     stats = data["stats"]
@@ -93,7 +94,7 @@ def check_payouts(client, api):
                 time.sleep(60)
             tweet = format_payout_tweet(payout, stats)
             print(f"Posting payout tweet:\n{tweet}\n")
-            post_tweet(client, api, tweet, "payout")
+            post_tweet(session, tweet, "payout")
             print(f"Posted: {payout['id']} — ${payout['amount']}")
         PAYOUT_STATE_FILE.write_text(recent[0]["id"])
 
@@ -114,13 +115,12 @@ def format_payout_tweet(payout, stats):
         lines.append(trader)
 
     lines += ["", f"${total_paid:,.2f} paid to {total_count} funded traders so far! $PROPR"]
-
     lines.append(f"Tx: https://etherscan.io/tx/{tx_hash}")
 
     return "\n".join(lines)
 
 
-def check_passes(client, api, challenges):
+def check_passes(session, challenges):
     data = fetch("/api/propr/v1/stats/activity?limit=20&types=passed")
     events = data["events"]
 
@@ -147,7 +147,7 @@ def check_passes(client, api, challenges):
 
     tweet, image_name = format_pass_tweet(new_passes, challenges)
     print(f"Posting pass tweet:\n{tweet}\n")
-    post_tweet(client, api, tweet, image_name)
+    post_tweet(session, tweet, image_name)
     print(f"Posted pass tweet for {len(new_passes)} event(s)")
 
     ACTIVITY_STATE_FILE.write_text(events[0]["attemptId"])
@@ -176,7 +176,6 @@ def format_pass_tweet(new_passes, challenges):
         else:
             return f"✅ A trader just passed their @ProprXYZ challenge!\n\n$PROPR", "mixed"
 
-    # Multiple passes — group by challenge
     challenge_counts = Counter(event["challengeId"] for event in new_passes)
     unique_challenges = list(challenge_counts.keys())
 
@@ -198,7 +197,6 @@ def format_pass_tweet(new_passes, challenges):
             name = challenge["name"] if challenge else "challenge"
             return f"✅ {count} traders just passed their @ProprXYZ {name}\n\n$PROPR", "free-trial"
 
-    # Mixed challenges — show breakdown sorted by funded balance descending
     lines = [f"✅ {count} traders just passed their @ProprXYZ challenge", ""]
 
     sorted_challenges = sorted(
@@ -227,10 +225,10 @@ def format_pass_tweet(new_passes, challenges):
 
 def main():
     challenges = load_challenges()
-    client, api = get_clients()
-    check_payouts(client, api)
+    session = get_session()
+    check_payouts(session)
     time.sleep(30)
-    check_passes(client, api, challenges)
+    check_passes(session, challenges)
 
 
 if __name__ == "__main__":

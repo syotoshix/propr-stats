@@ -1,7 +1,6 @@
 import os
 import sys
 import requests
-import tweepy
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
 from requests_oauthlib import OAuth1Session
@@ -9,6 +8,48 @@ from requests_oauthlib import OAuth1Session
 BASE_URL = "https://www.propr.xyz"
 IMAGES_DIR = Path(__file__).parent.parent / "images"
 DAILY_STATE_FILE = Path(__file__).parent.parent / "state" / "last_daily_date.txt"
+TWITTER_BASE = "https://api.twitter.com/2"
+TWITTER_UPLOAD = "https://upload.twitter.com/1/media/upload"
+
+
+def get_session():
+    return OAuth1Session(
+        os.environ["TWITTER_API_KEY"],
+        os.environ["TWITTER_API_SECRET"],
+        os.environ["TWITTER_ACCESS_TOKEN"],
+        os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
+    )
+
+
+def upload_media(session, image_name):
+    path = IMAGES_DIR / f"{image_name}.png"
+    if not path.exists():
+        return None
+    with open(path, "rb") as f:
+        resp = session.post(TWITTER_UPLOAD, files={"media": f})
+    resp.raise_for_status()
+    return resp.json()["media_id_string"]
+
+
+def post_tweet(session, text, media_id=None):
+    body = {"text": text}
+    if media_id:
+        body["media"] = {"media_ids": [media_id]}
+    resp = session.post(f"{TWITTER_BASE}/tweets", json=body)
+    resp.raise_for_status()
+    return resp.json()["data"]["id"]
+
+
+def pin_tweet(session, tweet_id):
+    me = session.get(f"{TWITTER_BASE}/users/me")
+    me.raise_for_status()
+    user_id = me.json()["data"]["id"]
+    resp = session.post(
+        f"{TWITTER_BASE}/users/{user_id}/pinned_tweets",
+        json={"tweet_id": str(tweet_id)},
+    )
+    resp.raise_for_status()
+    print(f"Tweet {tweet_id} pinned successfully")
 
 
 def get_yesterday():
@@ -19,49 +60,6 @@ def fetch(path):
     resp = requests.get(f"{BASE_URL}{path}", timeout=10)
     resp.raise_for_status()
     return resp.json()
-
-
-def get_clients():
-    auth = tweepy.OAuth1UserHandler(
-        os.environ["TWITTER_API_KEY"],
-        os.environ["TWITTER_API_SECRET"],
-        os.environ["TWITTER_ACCESS_TOKEN"],
-        os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
-    )
-    api = tweepy.API(auth)
-    client = tweepy.Client(
-        consumer_key=os.environ["TWITTER_API_KEY"],
-        consumer_secret=os.environ["TWITTER_API_SECRET"],
-        access_token=os.environ["TWITTER_ACCESS_TOKEN"],
-        access_token_secret=os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
-    )
-    return client, api
-
-
-def upload_image(api, name):
-    path = IMAGES_DIR / f"{name}.png"
-    if not path.exists():
-        return None
-    media = api.media_upload(filename=str(path))
-    return media.media_id_string
-
-
-def pin_tweet(tweet_id):
-    session = OAuth1Session(
-        os.environ["TWITTER_API_KEY"],
-        os.environ["TWITTER_API_SECRET"],
-        os.environ["TWITTER_ACCESS_TOKEN"],
-        os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
-    )
-    me = session.get("https://api.twitter.com/2/users/me")
-    me.raise_for_status()
-    user_id = me.json()["data"]["id"]
-    resp = session.post(
-        f"https://api.twitter.com/2/users/{user_id}/pinned_tweets",
-        json={"tweet_id": str(tweet_id)},
-    )
-    resp.raise_for_status()
-    print(f"Tweet {tweet_id} pinned successfully")
 
 
 def find_day(history, date):
@@ -124,16 +122,12 @@ def main():
     tweet = "\n".join(lines)
     print(f"Posting tweet:\n{tweet}\n")
 
-    client, api = get_clients()
-    media_id = upload_image(api, "daily")
-    kwargs = {"media_ids": [media_id]} if media_id else {}
-    response = client.create_tweet(text=tweet, **kwargs)
-    tweet_id = response.data["id"]
+    session = get_session()
+    media_id = upload_media(session, "daily")
+    tweet_id = post_tweet(session, tweet, media_id)
     DAILY_STATE_FILE.write_text(yesterday)
     print(f"Daily tweet posted for {yesterday}: {tweet_id}")
-
-    pin_tweet(tweet_id)
-
+    pin_tweet(session, tweet_id)
 
 
 if __name__ == "__main__":
