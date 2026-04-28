@@ -87,7 +87,7 @@ def main():
 
     date_str = datetime.strptime(yesterday, "%Y-%m-%d").strftime("%b %-d")
 
-    lines = [f"Daily @ProprXYZ trader stats - {date_str}", ""]
+    lines = [f"Daily @ProprXYZ trader stats - $PROPR {date_str}", ""]
 
     if total_purchases > 0:
         lines.append(f"🛒 {total_purchases} challenges purchased")

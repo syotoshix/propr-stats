@@ -167,14 +167,14 @@ def format_pass_tweet(new_passes, challenges):
             price_str = f"${price}" if price else "free"
             tweet = (
                 f"✅ A trader just passed the @ProprXYZ {name} Challenge!\n\n"
-                f"{price_str} challenge 👉 ${funded:,} funded account"
+                f"{price_str} challenge 👉 ${funded:,} funded account\n\n$PROPR"
             )
             return tweet, challenge["slug"].split("-")[0]
         elif challenge and challenge["fundedBalance"] is None:
             name = challenge["name"]
-            return f"✅ A trader just passed the @ProprXYZ {name}!\n\nTime to get funded! 💰", "free-trial"
+            return f"✅ A trader just passed the @ProprXYZ {name}!\n\nTime to get funded! $PROPR 💰", "free-trial"
         else:
-            return "✅ A trader just passed their @ProprXYZ challenge!", "mixed"
+            return f"✅ A trader just passed their @ProprXYZ challenge!\n\n$PROPR", "mixed"
 
     # Multiple passes — group by challenge
     challenge_counts = Counter(event["challengeId"] for event in new_passes)
@@ -191,12 +191,12 @@ def format_pass_tweet(new_passes, challenges):
             price_str = f"${price}" if price else "free"
             tweet = (
                 f"✅ {count} traders just passed their @ProprXYZ {name} Challenge\n\n"
-                f"{price_str} challenge 👉 ${funded:,} funded account — each"
+                f"{price_str} challenge 👉 ${funded:,} funded account — each\n\n$PROPR"
             )
             return tweet, challenge["slug"].split("-")[0]
         else:
             name = challenge["name"] if challenge else "challenge"
-            return f"✅ {count} traders just passed their @ProprXYZ {name}", "free-trial"
+            return f"✅ {count} traders just passed their @ProprXYZ {name}\n\n$PROPR", "free-trial"
 
     # Mixed challenges — show breakdown sorted by funded balance descending
     lines = [f"✅ {count} traders just passed their @ProprXYZ challenge", ""]
@@ -212,13 +212,16 @@ def format_pass_tweet(new_passes, challenges):
         if challenge:
             name = challenge["name"]
             funded = challenge["fundedBalance"]
+            price = challenge["price"]
             if funded is not None:
-                lines.append(f"{n}x {name} 👉 ${funded:,} funded")
+                price_str = f"${price}" if price else "free"
+                lines.append(f"{n}x {name}, {price_str} challenge 👉 ${funded:,} funded")
             else:
                 lines.append(f"{n}x {name}")
         else:
             lines.append(f"{n}x Unknown Challenge")
 
+    lines.append("\n$PROPR")
     return "\n".join(lines), "mixed"
 
 
