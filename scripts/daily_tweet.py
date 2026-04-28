@@ -4,6 +4,7 @@ import requests
 import tweepy
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
+from requests_oauthlib import OAuth1Session
 
 BASE_URL = "https://www.propr.xyz"
 IMAGES_DIR = Path(__file__).parent.parent / "images"
@@ -43,6 +44,24 @@ def upload_image(api, name):
         return None
     media = api.media_upload(filename=str(path))
     return media.media_id_string
+
+
+def pin_tweet(tweet_id):
+    session = OAuth1Session(
+        os.environ["TWITTER_API_KEY"],
+        os.environ["TWITTER_API_SECRET"],
+        os.environ["TWITTER_ACCESS_TOKEN"],
+        os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
+    )
+    me = session.get("https://api.twitter.com/2/users/me")
+    me.raise_for_status()
+    user_id = me.json()["data"]["id"]
+    resp = session.post(
+        f"https://api.twitter.com/2/users/{user_id}/pinned_tweets",
+        json={"tweet_id": str(tweet_id)},
+    )
+    resp.raise_for_status()
+    print(f"Tweet {tweet_id} pinned successfully")
 
 
 def find_day(history, date):
@@ -113,8 +132,8 @@ def main():
     DAILY_STATE_FILE.write_text(yesterday)
     print(f"Daily tweet posted for {yesterday}: {tweet_id}")
 
-    client.pin_tweet(tweet_id, user_auth=True)
-    print(f"Tweet {tweet_id} pinned")
+    pin_tweet(tweet_id)
+
 
 
 if __name__ == "__main__":
