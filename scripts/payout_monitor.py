@@ -106,17 +106,16 @@ def format_payout_tweet(payout, stats):
     tx_hash = payout["tx_hash"]
     badge = payout.get("badge", "")
 
-    lines = [f"💸 @ProprXYZ just paid out ${amount:,.2f} to a funded trader", ""]
+    lines = [f"💸 @ProprXYZ just paid out ${amount:,.2f} USDC to a funded trader", ""]
 
     if badge:
         lines.append(f"{trader} — {badge.lower()} ✅")
     else:
         lines.append(trader)
 
-    lines += ["", f"${total_paid:,.2f} paid to {total_count} funded traders so far"]
+    lines += ["", f"${total_paid:,.2f} paid to {total_count} funded traders so far! $PROPR"]
 
-    tx_short = f"{tx_hash[:6]}......{tx_hash[-6:]}"
-    lines.append(f"Tx: {tx_short}")
+    lines.append(f"Tx: https://etherscan.io/tx/{tx_hash}")
 
     return "\n".join(lines)
 
