@@ -108,9 +108,13 @@ def main():
     client, api = get_clients()
     media_id = upload_image(api, "daily")
     kwargs = {"media_ids": [media_id]} if media_id else {}
-    client.create_tweet(text=tweet, **kwargs)
+    response = client.create_tweet(text=tweet, **kwargs)
+    tweet_id = response.data["id"]
     DAILY_STATE_FILE.write_text(yesterday)
-    print(f"Daily tweet posted for {yesterday}")
+    print(f"Daily tweet posted for {yesterday}: {tweet_id}")
+
+    client.pin_tweet(tweet_id, user_auth=True)
+    print(f"Tweet {tweet_id} pinned")
 
 
 if __name__ == "__main__":
