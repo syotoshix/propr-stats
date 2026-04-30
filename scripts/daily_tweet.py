@@ -40,17 +40,6 @@ def post_tweet(session, text, media_id=None):
     return resp.json()["data"]["id"]
 
 
-def pin_tweet(session, tweet_id):
-    me = session.get(f"{TWITTER_BASE}/users/me")
-    me.raise_for_status()
-    user_id = me.json()["data"]["id"]
-    resp = session.post(
-        f"{TWITTER_BASE}/users/{user_id}/pinned_tweets",
-        json={"tweet_id": str(tweet_id)},
-    )
-    resp.raise_for_status()
-    print(f"Tweet {tweet_id} pinned successfully")
-
 
 def get_yesterday():
     return (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%d")
@@ -127,7 +116,6 @@ def main():
     tweet_id = post_tweet(session, tweet, media_id)
     DAILY_STATE_FILE.write_text(yesterday)
     print(f"Daily tweet posted for {yesterday}: {tweet_id}")
-    pin_tweet(session, tweet_id)
 
 
 if __name__ == "__main__":
