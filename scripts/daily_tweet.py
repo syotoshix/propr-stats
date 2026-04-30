@@ -8,8 +8,8 @@ from requests_oauthlib import OAuth1Session
 BASE_URL = "https://www.propr.xyz"
 IMAGES_DIR = Path(__file__).parent.parent / "images"
 DAILY_STATE_FILE = Path(__file__).parent.parent / "state" / "last_daily_date.txt"
-TWITTER_BASE = "https://api.twitter.com/2"
-TWITTER_UPLOAD = "https://upload.twitter.com/1/media/upload"
+TWITTER_BASE = "https://api.x.com/2"
+TWITTER_UPLOAD = "https://api.x.com/2/media/upload"
 
 
 def get_session():
@@ -26,9 +26,10 @@ def upload_media(session, image_name):
     if not path.exists():
         return None
     with open(path, "rb") as f:
-        resp = session.post(TWITTER_UPLOAD, files={"media": f})
+        resp = session.post(TWITTER_UPLOAD, files={"media": f}, data={"media_category": "tweet_image"})
     resp.raise_for_status()
-    return resp.json()["media_id_string"]
+    data = resp.json()
+    return data.get("media_id_string") or str(data["media_id"])
 
 
 def post_tweet(session, text, media_id=None):
