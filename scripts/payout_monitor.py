@@ -49,8 +49,7 @@ def upload_media(session, image_name):
     with open(path, "rb") as f:
         resp = session.post(TWITTER_UPLOAD, files={"media": f}, data={"media_category": "tweet_image"})
     resp.raise_for_status()
-    data = resp.json()
-    return data.get("media_id_string") or str(data["media_id"])
+    return resp.json()["data"]["id"]
 
 
 def post_tweet(session, text, image_name=None):
