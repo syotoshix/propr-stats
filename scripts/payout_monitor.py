@@ -100,12 +100,16 @@ def check_payouts(session):
 
 
 def format_payout_tweet(payout, stats):
+    from datetime import datetime, timezone
     amount = payout["amount"]
     trader = payout["anon_user"]
     total_paid = stats["totalPaid"]
     total_count = stats["totalCount"]
     tx_hash = payout["tx_hash"]
     badge = payout.get("badge", "")
+
+    paid_at = datetime.fromisoformat(payout["paid_at"]).astimezone(timezone.utc)
+    date_str = paid_at.strftime("%b %-d, %H:%M UTC")
 
     lines = [f"💸 @ProprXYZ just paid out ${amount:,.2f} USDC to a funded trader", ""]
 
@@ -114,8 +118,12 @@ def format_payout_tweet(payout, stats):
     else:
         lines.append(trader)
 
-    lines += ["", f"${total_paid:,.2f} paid to {total_count} funded traders so far! $PROPR"]
-    lines.append(f"Tx: https://etherscan.io/tx/{tx_hash}")
+    lines += [
+        "",
+        f"{date_str} · Tx: https://etherscan.io/tx/{tx_hash}",
+        "",
+        f"${total_paid:,.2f} paid to {total_count} funded traders so far! $PROPR",
+    ]
 
     return "\n".join(lines)
 
