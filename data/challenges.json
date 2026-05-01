@@ -70,5 +70,21 @@
     "price": 450,
     "fundedBalance": 50000,
     "profitSplit": 80
+  },
+  "urn:prp-challenge:Qz6XNCwYgYme": {
+    "name": "Gold",
+    "slug": "gold-s",
+    "challengeBalance": 100000,
+    "price": 999,
+    "fundedBalance": 100000,
+    "profitSplit": 80
+  },
+  "urn:prp-challenge:WeD1X2XxmB2X": {
+    "name": "Gold",
+    "slug": "gold-t",
+    "challengeBalance": 100000,
+    "price": 899,
+    "fundedBalance": 100000,
+    "profitSplit": 80
   }
 }

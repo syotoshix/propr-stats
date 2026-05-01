@@ -48,8 +48,21 @@ def fetch_pass_rates():
     return totals
 
 
+def base_slug(slug):
+    return slug[:-2] if slug.endswith(("-s", "-t")) else slug
+
+
+def display_name(challenge):
+    slug = challenge["slug"]
+    if slug.endswith("-s"):
+        return f"{challenge['name']} 1-Step"
+    elif slug.endswith("-t"):
+        return f"{challenge['name']} 2-Step"
+    return challenge["name"]
+
+
 def pass_rate_line(name, slug, pass_rates):
-    base = slug[:-2] if slug.endswith(("-s", "-t")) else slug
+    base = base_slug(slug)
     stats = pass_rates.get(base)
     if not stats:
         return None
@@ -179,105 +192,169 @@ def check_passes(session, challenges):
         print("No new pass events")
         return
 
+    gold_ids = {k for k, v in challenges.items() if v["slug"].startswith("gold-")}
+    gold_passes = [e for e in new_passes if e["challengeId"] in gold_ids]
+    other_passes = [e for e in new_passes if e["challengeId"] not in gold_ids]
+
     pass_rates = fetch_pass_rates()
-    tweet, image_name = format_pass_tweet(new_passes, challenges, pass_rates)
-    print(f"Posting pass tweet:\n{tweet}\n")
-    post_tweet(session, tweet, image_name)
-    print(f"Posted pass tweet for {len(new_passes)} event(s)")
+    tweets_posted = 0
+
+    if gold_passes:
+        tweet, image_name = format_pass_tweet(gold_passes, challenges, pass_rates)
+        print(f"Posting Gold pass tweet:\n{tweet}\n")
+        post_tweet(session, tweet, image_name)
+        print(f"Posted Gold pass tweet for {len(gold_passes)} event(s)")
+        tweets_posted += 1
+
+    if other_passes:
+        if tweets_posted > 0:
+            print("Waiting 60s before non-Gold pass tweet...")
+            time.sleep(60)
+        tweet, image_name = format_pass_tweet(other_passes, challenges, pass_rates)
+        print(f"Posting pass tweet:\n{tweet}\n")
+        post_tweet(session, tweet, image_name)
+        print(f"Posted pass tweet for {len(other_passes)} event(s)")
 
     ACTIVITY_STATE_FILE.write_text(events[0]["attemptId"])
 
 
 def format_pass_tweet(new_passes, challenges, pass_rates):
+    from collections import defaultdict
+    from datetime import datetime, timezone
+    occurred_at = datetime.fromisoformat(new_passes[0]["occurredAt"].replace("Z", "+00:00")).astimezone(timezone.utc)
+    timestamp = f"⏱️ {occurred_at.strftime('%b %-d, %H:%M UTC')}"
     count = len(new_passes)
 
-    if count == 1:
+    # Group events by base slug (silver, gold, free-trial, etc.)
+    base_groups = defaultdict(list)
+    unknown_count = 0
+    for event in new_passes:
+        ch = challenges.get(event["challengeId"])
+        if ch:
+            base_groups[base_slug(ch["slug"])].append(event)
+        else:
+            unknown_count += 1
+
+    unique_bases = list(base_groups.keys())
+
+    # Single pass
+    if count == 1 and not unknown_count:
         event = new_passes[0]
         challenge = challenges.get(event["challengeId"])
-
         if challenge and challenge["fundedBalance"] is not None:
-            name = challenge["name"]
+            dname = display_name(challenge)
             funded = challenge["fundedBalance"]
             price = challenge["price"]
             price_str = f"${price}" if price else "free"
-            stat = pass_rate_line(name, challenge["slug"], pass_rates)
+            stat = pass_rate_line(challenge["name"], challenge["slug"], pass_rates)
             lines = [
-                f"✅ A trader just passed the @ProprXYZ {name} Challenge!",
+                f"✅ A trader just passed the @ProprXYZ {dname} Challenge!",
+                timestamp,
                 "",
                 f"{price_str} challenge 👉 ${funded:,} funded account",
             ]
             if stat:
                 lines.append(stat)
             lines += ["", "Stay liquid $PROPR"]
-            return "\n".join(lines), challenge["slug"].split("-")[0]
+            return "\n".join(lines), base_slug(challenge["slug"])
         elif challenge and challenge["fundedBalance"] is None:
-            name = challenge["name"]
-            stat = pass_rate_line(name, challenge["slug"], pass_rates)
-            lines = [f"✅ A trader just passed the @ProprXYZ {name}!", "", "Time to get funded!"]
+            stat = pass_rate_line(challenge["name"], challenge["slug"], pass_rates)
+            lines = [f"✅ A trader just passed the @ProprXYZ {challenge['name']}!", timestamp, "", "Time to get funded!"]
             if stat:
                 lines.append(stat)
             lines += ["", "Stay liquid $PROPR"]
             return "\n".join(lines), "free-trial"
         else:
-            return f"✅ A trader just passed their @ProprXYZ challenge!\n\nStay liquid $PROPR", "mixed"
+            return f"✅ A trader just passed their @ProprXYZ challenge!\n{timestamp}\n\nStay liquid $PROPR", "mixed"
 
-    challenge_counts = Counter(event["challengeId"] for event in new_passes)
-    unique_challenges = list(challenge_counts.keys())
+    # All events are same base challenge (e.g., all Silver — mix of 1-step and 2-step is fine)
+    if len(unique_bases) == 1 and not unknown_count:
+        b = unique_bases[0]
+        events_in_group = base_groups[b]
+        variant_counts = Counter(e["challengeId"] for e in events_in_group)
+        unique_variants = list(variant_counts.keys())
+        base_challenge_name = challenges[unique_variants[0]]["name"]
 
-    if len(unique_challenges) == 1:
-        challenge_id = unique_challenges[0]
-        challenge = challenges.get(challenge_id)
-
-        if challenge and challenge["fundedBalance"] is not None:
-            name = challenge["name"]
+        # All same variant
+        if len(unique_variants) == 1:
+            challenge = challenges[unique_variants[0]]
+            dname = display_name(challenge)
             funded = challenge["fundedBalance"]
             price = challenge["price"]
-            price_str = f"${price}" if price else "free"
-            stat = pass_rate_line(name, challenge["slug"], pass_rates)
-            lines = [
-                f"✅ {count} traders just passed their @ProprXYZ {name} Challenge",
-                "",
-                f"{price_str} challenge 👉 ${funded:,} funded account — each",
-            ]
-            if stat:
-                lines.append(stat)
-            lines += ["", "Stay liquid $PROPR"]
-            return "\n".join(lines), challenge["slug"].split("-")[0]
-        else:
-            name = challenge["name"] if challenge else "challenge"
-            stat = pass_rate_line(name, challenge["slug"], pass_rates) if challenge else None
-            lines = [f"✅ {count} traders just passed their @ProprXYZ {name}"]
-            if stat:
-                lines += ["", stat]
-            lines += ["", "Stay liquid $PROPR"]
-            return "\n".join(lines), "free-trial"
+            stat = pass_rate_line(challenge["name"], challenge["slug"], pass_rates)
+            if funded is not None:
+                price_str = f"${price}" if price else "free"
+                lines = [
+                    f"✅ {count} traders just passed their @ProprXYZ {dname} Challenge",
+                    timestamp,
+                    "",
+                    f"{price_str} challenge 👉 ${funded:,} funded account — each",
+                ]
+                if stat:
+                    lines.append(stat)
+                lines += ["", "Stay liquid $PROPR"]
+                return "\n".join(lines), b
+            else:
+                lines = [f"✅ {count} traders just passed their @ProprXYZ {dname}", timestamp]
+                if stat:
+                    lines += ["", stat]
+                lines += ["", "Stay liquid $PROPR"]
+                return "\n".join(lines), "free-trial"
 
-    lines = [f"✅ {count} traders just passed their @ProprXYZ challenge", ""]
+        # Mixed variants of same base (e.g., 1x Silver 1-Step + 1x Silver 2-Step)
+        sorted_variants = sorted(unique_variants, key=lambda cid: challenges[cid].get("price") or 0, reverse=True)
+        lines = [f"✅ {count} traders just passed their @ProprXYZ {base_challenge_name} Challenge", timestamp, ""]
+        for cid in sorted_variants:
+            n = variant_counts[cid]
+            ch = challenges[cid]
+            dname = display_name(ch)
+            funded = ch["fundedBalance"]
+            price = ch["price"]
+            if funded is not None:
+                price_str = f"${price}" if price else "free"
+                lines.append(f"{n}x {dname}, {price_str} challenge 👉 ${funded:,} funded")
+            else:
+                lines.append(f"{n}x {dname}")
+        stat = pass_rate_line(base_challenge_name, challenges[sorted_variants[0]]["slug"], pass_rates)
+        if stat:
+            lines += ["", stat]
+        lines += ["", "Stay liquid $PROPR"]
+        return "\n".join(lines), b
 
-    sorted_challenges = sorted(
-        challenge_counts.items(),
-        key=lambda x: (challenges.get(x[0], {}).get("fundedBalance") or -1),
+    # Multiple different base challenges (mixed tweet)
+    lines = [f"✅ {count} traders just passed their @ProprXYZ challenge", timestamp, ""]
+
+    sorted_bases = sorted(
+        base_groups.items(),
+        key=lambda x: max((challenges.get(e["challengeId"], {}).get("fundedBalance") or -1) for e in x[1]),
         reverse=True,
     )
 
-    for challenge_id, n in sorted_challenges:
-        challenge = challenges.get(challenge_id)
-        if challenge:
-            name = challenge["name"]
-            funded = challenge["fundedBalance"]
-            price = challenge["price"]
-            stat = pass_rate_line(name, challenge["slug"], pass_rates)
+    for b, events_in_group in sorted_bases:
+        variant_counts = Counter(e["challengeId"] for e in events_in_group)
+        sorted_variants = sorted(variant_counts.keys(), key=lambda cid: challenges.get(cid, {}).get("price") or 0, reverse=True)
+        base_challenge_name = challenges[sorted_variants[0]]["name"]
+
+        for cid in sorted_variants:
+            n = variant_counts[cid]
+            ch = challenges[cid]
+            dname = display_name(ch)
+            funded = ch["fundedBalance"]
+            price = ch["price"]
             if funded is not None:
                 price_str = f"${price}" if price else "free"
-                lines.append(f"{n}x {name}, {price_str} challenge 👉 ${funded:,} funded")
+                lines.append(f"{n}x {dname}, {price_str} challenge 👉 ${funded:,} funded")
             else:
-                lines.append(f"{n}x {name}")
-            if stat:
-                lines.append(stat)
-            lines.append("")
-        else:
-            lines.append(f"{n}x Unknown Challenge")
-            lines.append("")
+                lines.append(f"{n}x {dname}")
+
+        stat = pass_rate_line(base_challenge_name, challenges[sorted_variants[0]]["slug"], pass_rates)
+        if stat:
+            lines.append(stat)
+        lines.append("")
+
+    if unknown_count:
+        lines.append(f"{unknown_count}x Unknown Challenge")
+        lines.append("")
 
     lines.append("Stay liquid $PROPR")
     return "\n".join(lines), "mixed"
