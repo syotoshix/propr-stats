@@ -161,7 +161,7 @@ def format_payout_tweet(payout, stats):
         "",
         f"{date_str} · Tx: https://etherscan.io/tx/{tx_hash}",
         "",
-        f"${total_paid:,.2f} paid to {total_count} funded traders so far!\n\nStay liquid $PROPR",
+        f"${total_paid:,.2f} paid to {total_count} funded traders so far!\n\nStay liquid $PROPR 💧",
     ]
 
     return "\n".join(lines)
@@ -255,17 +255,17 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
             ]
             if stat:
                 lines.append(stat)
-            lines += ["", "Stay liquid $PROPR"]
+            lines += ["", "Stay liquid $PROPR 💧"]
             return "\n".join(lines), base_slug(challenge["slug"])
         elif challenge and challenge["fundedBalance"] is None:
             stat = pass_rate_line(challenge["name"], challenge["slug"], pass_rates)
             lines = [f"✅ A trader just passed the @ProprXYZ {challenge['name']}!", timestamp, "", "Time to get funded!"]
             if stat:
                 lines.append(stat)
-            lines += ["", "Stay liquid $PROPR"]
+            lines += ["", "Stay liquid $PROPR 💧"]
             return "\n".join(lines), "free-trial"
         else:
-            return f"✅ A trader just passed their @ProprXYZ challenge!\n{timestamp}\n\nStay liquid $PROPR", "mixed"
+            return f"✅ A trader just passed their @ProprXYZ challenge!\n{timestamp}\n\nStay liquid $PROPR 💧", "mixed"
 
     # All events are same base challenge (e.g., all Silver — mix of 1-step and 2-step is fine)
     if len(unique_bases) == 1 and not unknown_count:
@@ -292,13 +292,13 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
                 ]
                 if stat:
                     lines.append(stat)
-                lines += ["", "Stay liquid $PROPR"]
+                lines += ["", "Stay liquid $PROPR 💧"]
                 return "\n".join(lines), b
             else:
                 lines = [f"✅ {count} traders just passed their @ProprXYZ {dname}", timestamp]
                 if stat:
                     lines += ["", stat]
-                lines += ["", "Stay liquid $PROPR"]
+                lines += ["", "Stay liquid $PROPR 💧"]
                 return "\n".join(lines), "free-trial"
 
         # Mixed variants of same base (e.g., 1x Silver 1-Step + 1x Silver 2-Step)
@@ -318,7 +318,7 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
         stat = pass_rate_line(base_challenge_name, challenges[sorted_variants[0]]["slug"], pass_rates)
         if stat:
             lines += ["", stat]
-        lines += ["", "Stay liquid $PROPR"]
+        lines += ["", "Stay liquid $PROPR 💧"]
         return "\n".join(lines), b
 
     # Multiple different base challenges (mixed tweet)
@@ -356,7 +356,7 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
         lines.append(f"{unknown_count}x Unknown Challenge")
         lines.append("")
 
-    lines.append("Stay liquid $PROPR")
+    lines.append("Stay liquid $PROPR 💧")
     return "\n".join(lines), "mixed"
 
 
