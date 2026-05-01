@@ -35,6 +35,32 @@ def load_challenges():
         return json.load(f)
 
 
+def fetch_pass_rates():
+    data = fetch("/api/propr/v1/stats/challenges/pass-rates")
+    totals = {}
+    for ch in data:
+        slug = ch["slug"]
+        base = slug[:-2] if slug.endswith(("-s", "-t")) else slug
+        if base not in totals:
+            totals[base] = {"attempts": 0, "passed": 0}
+        totals[base]["attempts"] += ch["totalAttempts"]
+        totals[base]["passed"] += ch["passedAttempts"]
+    return totals
+
+
+def pass_rate_line(name, slug, pass_rates):
+    base = slug[:-2] if slug.endswith(("-s", "-t")) else slug
+    stats = pass_rates.get(base)
+    if not stats:
+        return None
+    attempts = stats["attempts"]
+    passed = stats["passed"]
+    trader_str = "1 trader has passed" if passed == 1 else f"{passed} traders have passed"
+    if base == "free-trial":
+        return f"In total {attempts:,} attempted the {name} ➡️ {trader_str}"
+    return f"In total {attempts:,} bought the {name} Challenge ➡️ {trader_str}"
+
+
 def read_state(path):
     if not path.exists():
         return None
@@ -122,7 +148,7 @@ def format_payout_tweet(payout, stats):
         "",
         f"{date_str} · Tx: https://etherscan.io/tx/{tx_hash}",
         "",
-        f"${total_paid:,.2f} paid to {total_count} funded traders so far! $PROPR",
+        f"${total_paid:,.2f} paid to {total_count} funded traders so far!\n\nStay liquid $PROPR",
     ]
 
     return "\n".join(lines)
@@ -153,7 +179,8 @@ def check_passes(session, challenges):
         print("No new pass events")
         return
 
-    tweet, image_name = format_pass_tweet(new_passes, challenges)
+    pass_rates = fetch_pass_rates()
+    tweet, image_name = format_pass_tweet(new_passes, challenges, pass_rates)
     print(f"Posting pass tweet:\n{tweet}\n")
     post_tweet(session, tweet, image_name)
     print(f"Posted pass tweet for {len(new_passes)} event(s)")
@@ -161,7 +188,7 @@ def check_passes(session, challenges):
     ACTIVITY_STATE_FILE.write_text(events[0]["attemptId"])
 
 
-def format_pass_tweet(new_passes, challenges):
+def format_pass_tweet(new_passes, challenges, pass_rates):
     count = len(new_passes)
 
     if count == 1:
@@ -173,16 +200,26 @@ def format_pass_tweet(new_passes, challenges):
             funded = challenge["fundedBalance"]
             price = challenge["price"]
             price_str = f"${price}" if price else "free"
-            tweet = (
-                f"✅ A trader just passed the @ProprXYZ {name} Challenge!\n\n"
-                f"{price_str} challenge 👉 ${funded:,} funded account\n\n$PROPR"
-            )
-            return tweet, challenge["slug"].split("-")[0]
+            stat = pass_rate_line(name, challenge["slug"], pass_rates)
+            lines = [
+                f"✅ A trader just passed the @ProprXYZ {name} Challenge!",
+                "",
+                f"{price_str} challenge 👉 ${funded:,} funded account",
+            ]
+            if stat:
+                lines.append(stat)
+            lines += ["", "Stay liquid $PROPR"]
+            return "\n".join(lines), challenge["slug"].split("-")[0]
         elif challenge and challenge["fundedBalance"] is None:
             name = challenge["name"]
-            return f"✅ A trader just passed the @ProprXYZ {name}!\n\nTime to get funded! $PROPR 💰", "free-trial"
+            stat = pass_rate_line(name, challenge["slug"], pass_rates)
+            lines = [f"✅ A trader just passed the @ProprXYZ {name}!", "", "Time to get funded!"]
+            if stat:
+                lines.append(stat)
+            lines += ["", "Stay liquid $PROPR"]
+            return "\n".join(lines), "free-trial"
         else:
-            return f"✅ A trader just passed their @ProprXYZ challenge!\n\n$PROPR", "mixed"
+            return f"✅ A trader just passed their @ProprXYZ challenge!\n\nStay liquid $PROPR", "mixed"
 
     challenge_counts = Counter(event["challengeId"] for event in new_passes)
     unique_challenges = list(challenge_counts.keys())
@@ -196,14 +233,24 @@ def format_pass_tweet(new_passes, challenges):
             funded = challenge["fundedBalance"]
             price = challenge["price"]
             price_str = f"${price}" if price else "free"
-            tweet = (
-                f"✅ {count} traders just passed their @ProprXYZ {name} Challenge\n\n"
-                f"{price_str} challenge 👉 ${funded:,} funded account — each\n\n$PROPR"
-            )
-            return tweet, challenge["slug"].split("-")[0]
+            stat = pass_rate_line(name, challenge["slug"], pass_rates)
+            lines = [
+                f"✅ {count} traders just passed their @ProprXYZ {name} Challenge",
+                "",
+                f"{price_str} challenge 👉 ${funded:,} funded account — each",
+            ]
+            if stat:
+                lines.append(stat)
+            lines += ["", "Stay liquid $PROPR"]
+            return "\n".join(lines), challenge["slug"].split("-")[0]
         else:
             name = challenge["name"] if challenge else "challenge"
-            return f"✅ {count} traders just passed their @ProprXYZ {name}\n\n$PROPR", "free-trial"
+            stat = pass_rate_line(name, challenge["slug"], pass_rates) if challenge else None
+            lines = [f"✅ {count} traders just passed their @ProprXYZ {name}"]
+            if stat:
+                lines += ["", stat]
+            lines += ["", "Stay liquid $PROPR"]
+            return "\n".join(lines), "free-trial"
 
     lines = [f"✅ {count} traders just passed their @ProprXYZ challenge", ""]
 
@@ -219,15 +266,20 @@ def format_pass_tweet(new_passes, challenges):
             name = challenge["name"]
             funded = challenge["fundedBalance"]
             price = challenge["price"]
+            stat = pass_rate_line(name, challenge["slug"], pass_rates)
             if funded is not None:
                 price_str = f"${price}" if price else "free"
                 lines.append(f"{n}x {name}, {price_str} challenge 👉 ${funded:,} funded")
             else:
                 lines.append(f"{n}x {name}")
+            if stat:
+                lines.append(stat)
+            lines.append("")
         else:
             lines.append(f"{n}x Unknown Challenge")
+            lines.append("")
 
-    lines.append("\n$PROPR")
+    lines.append("Stay liquid $PROPR")
     return "\n".join(lines), "mixed"
 
 
