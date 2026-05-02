@@ -2,7 +2,7 @@ name: Daily Tweet
 
 on:
   schedule:
-    - cron: '0 10 * * *'  # noon Amsterdam time (UTC+2 CEST)
+    - cron: '0 9 * * *'  # 11 AM Amsterdam time (UTC+2 CEST)
   workflow_dispatch:
 
 jobs:
