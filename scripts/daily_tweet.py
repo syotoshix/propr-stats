@@ -36,6 +36,8 @@ def post_tweet(session, text, media_id=None):
     if media_id:
         body["media"] = {"media_ids": [media_id]}
     resp = session.post(f"{TWITTER_BASE}/tweets", json=body)
+    if not resp.ok:
+        print(f"Tweet POST failed {resp.status_code}: {resp.text}")
     resp.raise_for_status()
     return resp.json()["data"]["id"]
 
