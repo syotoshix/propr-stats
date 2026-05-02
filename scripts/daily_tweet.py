@@ -108,7 +108,7 @@ def main():
     if passes > 0:
         lines.append(f"✅ {passes} traders passed their challenge")
 
-    lines += ["", "Get funded 👉 app.propr.xyz/r/75agXwd6", "", "Stay liquid 💧 $PROPR"]
+    lines += ["", "Get funded 👉 app.propr.xyz/r/75agXwd6"]
 
     tweet = "\n".join(lines)
     print(f"Posting tweet:\n{tweet}\n")
