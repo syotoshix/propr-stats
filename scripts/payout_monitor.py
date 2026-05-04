@@ -74,6 +74,19 @@ def pass_rate_line(name, slug, pass_rates):
     return f"In total {attempts:,} bought the {name} Challenge ➡️ {trader_str}"
 
 
+def compact_stat_line(base, pass_rates):
+    stats = pass_rates.get(base)
+    if not stats:
+        return None
+    return f"{stats['attempts']:,} attempted ➡️ {stats['passed']:,} traders passed"
+
+
+def fmt_funded(amount):
+    if amount >= 1000 and amount % 1000 == 0:
+        return f"${amount // 1000}K"
+    return f"${amount:,}"
+
+
 def read_state(path):
     if not path.exists():
         return None
@@ -129,6 +142,7 @@ def check_payouts(session):
     if not new_payouts:
         print("No new payouts")
     else:
+        PAYOUT_STATE_FILE.write_text(recent[0]["id"])
         for i, payout in enumerate(reversed(new_payouts)):
             if i > 0:
                 print("Waiting 60s before next payout tweet...")
@@ -137,7 +151,6 @@ def check_payouts(session):
             print(f"Posting payout tweet:\n{tweet}\n")
             post_tweet(session, tweet, "payout")
             print(f"Posted: {payout['id']} — ${payout['amount']}")
-        PAYOUT_STATE_FILE.write_text(recent[0]["id"])
 
 
 def format_payout_tweet(payout, stats):
@@ -201,6 +214,8 @@ def check_passes(session, challenges):
     pass_rates = fetch_pass_rates()
     tweets_posted = 0
 
+    ACTIVITY_STATE_FILE.write_text(events[0]["attemptId"])
+
     if gold_passes:
         tweet, image_name = format_pass_tweet(gold_passes, challenges, pass_rates)
         print(f"Posting Gold pass tweet:\n{tweet}\n")
@@ -216,8 +231,6 @@ def check_passes(session, challenges):
         print(f"Posting pass tweet:\n{tweet}\n")
         post_tweet(session, tweet, image_name)
         print(f"Posted pass tweet for {len(other_passes)} event(s)")
-
-    ACTIVITY_STATE_FILE.write_text(events[0]["attemptId"])
 
 
 def format_pass_tweet(new_passes, challenges, pass_rates):
@@ -283,29 +296,28 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
             dname = display_name(challenge)
             funded = challenge["fundedBalance"]
             price = challenge["price"]
-            stat = pass_rate_line(challenge["name"], challenge["slug"], pass_rates)
+            cstat = compact_stat_line(b, pass_rates)
             if funded is not None:
                 price_str = f"${price}" if price else "free"
                 lines = [
-                    f"✅ {count} traders just passed their @ProprXYZ {dname} Challenge",
-                    timestamp,
+                    f"✅ {count} traders recently passed their @ProprXYZ {dname} Challenge",
                     "",
-                    f"{price_str} challenge 👉 ${funded:,} funded account — each",
+                    f"{price_str} challenge 👉 {fmt_funded(funded)} funded — each",
                 ]
-                if stat:
-                    lines += ["", stat]
+                if cstat:
+                    lines.append(cstat)
                 lines += ["", "Stay liquid 💧 $PROPR"]
                 return "\n".join(lines), b
             else:
-                lines = [f"✅ {count} traders just passed their @ProprXYZ {dname}", timestamp]
-                if stat:
-                    lines += ["", stat]
+                lines = [f"✅ {count} traders recently passed their @ProprXYZ {dname}", ""]
+                if cstat:
+                    lines.append(cstat)
                 lines += ["", "Stay liquid 💧 $PROPR"]
                 return "\n".join(lines), "free-trial"
 
         # Mixed variants of same base (e.g., 1x Silver 1-Step + 1x Silver 2-Step)
         sorted_variants = sorted(unique_variants, key=lambda cid: challenges[cid].get("price") or 0, reverse=True)
-        lines = [f"✅ {count} traders just passed their @ProprXYZ {base_challenge_name} Challenge", timestamp, ""]
+        lines = [f"✅ {count} traders recently passed their @ProprXYZ {base_challenge_name} Challenge", ""]
         for cid in sorted_variants:
             n = variant_counts[cid]
             ch = challenges[cid]
@@ -314,17 +326,17 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
             price = ch["price"]
             if funded is not None:
                 price_str = f"${price}" if price else "free"
-                lines.append(f"{n}x {dname}, {price_str} challenge 👉 ${funded:,} funded")
+                lines.append(f"{n}x {dname}, {price_str} challenge 👉 {fmt_funded(funded)} funded")
             else:
                 lines.append(f"{n}x {dname}")
-        stat = pass_rate_line(base_challenge_name, challenges[sorted_variants[0]]["slug"], pass_rates)
-        if stat:
-            lines += ["", stat]
+        cstat = compact_stat_line(b, pass_rates)
+        if cstat:
+            lines.append(cstat)
         lines += ["", "Stay liquid 💧 $PROPR"]
         return "\n".join(lines), b
 
     # Multiple different base challenges (mixed tweet)
-    lines = [f"✅ {count} traders just passed their @ProprXYZ challenge", timestamp, ""]
+    lines = [f"✅ {count} traders recently passed their @ProprXYZ challenge", ""]
 
     sorted_bases = sorted(
         base_groups.items(),
@@ -335,7 +347,6 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
     for b, events_in_group in sorted_bases:
         variant_counts = Counter(e["challengeId"] for e in events_in_group)
         sorted_variants = sorted(variant_counts.keys(), key=lambda cid: challenges.get(cid, {}).get("price") or 0, reverse=True)
-        base_challenge_name = challenges[sorted_variants[0]]["name"]
 
         for cid in sorted_variants:
             n = variant_counts[cid]
@@ -345,13 +356,13 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
             price = ch["price"]
             if funded is not None:
                 price_str = f"${price}" if price else "free"
-                lines.append(f"{n}x {dname}, {price_str} challenge 👉 ${funded:,} funded")
+                lines.append(f"{n}x {dname}, {price_str} challenge 👉 {fmt_funded(funded)} funded")
             else:
                 lines.append(f"{n}x {dname}")
 
-        stat = pass_rate_line(base_challenge_name, challenges[sorted_variants[0]]["slug"], pass_rates)
-        if stat:
-            lines += ["", stat]
+        cstat = compact_stat_line(b, pass_rates)
+        if cstat:
+            lines.append(cstat)
         lines.append("")
 
     if unknown_count:
