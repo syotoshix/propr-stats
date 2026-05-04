@@ -143,14 +143,19 @@ def check_payouts(session):
         print("No new payouts")
     else:
         PAYOUT_STATE_FILE.write_text(recent[0]["id"])
-        for i, payout in enumerate(reversed(new_payouts)):
-            if i > 0:
+        tweets_posted = 0
+        for payout in reversed(new_payouts):
+            if payout["amount"] < 100:
+                print(f"Skipping payout tweet (${payout['amount']} below $100 minimum): {payout['id']}")
+                continue
+            if tweets_posted > 0:
                 print("Waiting 60s before next payout tweet...")
                 time.sleep(60)
             tweet = format_payout_tweet(payout, stats)
             print(f"Posting payout tweet:\n{tweet}\n")
             post_tweet(session, tweet, "payout")
             print(f"Posted: {payout['id']} — ${payout['amount']}")
+            tweets_posted += 1
 
 
 def format_payout_tweet(payout, stats):
