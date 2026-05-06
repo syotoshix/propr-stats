@@ -61,6 +61,23 @@ def display_name(challenge):
     return challenge["name"]
 
 
+CHALLENGE_EMOJIS = {
+    "starter": "🟢",
+    "explorer": "🔵",
+    "silver": "⚪",
+    "bronze": "🟠",
+    "gold": "🟡",
+}
+
+
+def challenge_emoji(slug):
+    return CHALLENGE_EMOJIS.get(base_slug(slug), "")
+
+
+def funded_k(amount):
+    return f"${amount // 1000}K"
+
+
 def pass_rate_line(name, slug, pass_rates):
     base = base_slug(slug)
     stats = pass_rates.get(base)
@@ -74,17 +91,12 @@ def pass_rate_line(name, slug, pass_rates):
     return f"In total {attempts:,} bought the {name} Challenge ➡️ {trader_str}"
 
 
-def compact_stat_line(base, pass_rates):
-    stats = pass_rates.get(base)
+def pass_rate_line_short(slug, pass_rates):
+    stats = pass_rates.get(base_slug(slug))
     if not stats:
         return None
-    return f"{stats['attempts']:,} attempted ➡️ {stats['passed']:,} traders passed"
-
-
-def fmt_funded(amount):
-    if amount >= 1000 and amount % 1000 == 0:
-        return f"${amount // 1000}K"
-    return f"${amount:,}"
+    trader_str = "1 trader passed" if stats["passed"] == 1 else f"{stats['passed']} traders passed"
+    return f"{stats['attempts']:,} attempted ➡️ {trader_str}"
 
 
 def read_state(path):
@@ -170,18 +182,19 @@ def format_payout_tweet(payout, stats):
     paid_at = datetime.fromisoformat(payout["paid_at"]).astimezone(timezone.utc)
     date_str = paid_at.strftime("%b %-d, %H:%M UTC")
 
-    lines = [f"💸 @ProprXYZ just paid out ${amount:,.2f} USDC to a funded trader", ""]
+    trader_line = f"{trader} - {badge.lower()} ✅" if badge else trader
 
-    if badge:
-        lines.append(f"{trader} — {badge.lower()} ✅")
-    else:
-        lines.append(trader)
-
-    lines += [
+    lines = [
+        f"💸 @ProprXYZ just paid out ${amount:,.2f} USDC to a funded trader",
         "",
-        f"{date_str} · Tx: https://etherscan.io/tx/{tx_hash}",
+        trader_line,
+        f"⏱️ {date_str}",
         "",
-        f"${total_paid:,.2f} paid to {total_count} funded traders so far!\n\nStay liquid 💧 $PROPR",
+        f"Tx: https://etherscan.io/tx/{tx_hash}",
+        "",
+        f"${total_paid:,.2f} paid to {total_count} funded traders so far! 💰",
+        "",
+        "Stay liquid 💧 $PROPR",
     ]
 
     return "\n".join(lines)
@@ -263,6 +276,7 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
         challenge = challenges.get(event["challengeId"])
         if challenge and challenge["fundedBalance"] is not None:
             dname = display_name(challenge)
+            emoji = challenge_emoji(challenge["slug"])
             funded = challenge["fundedBalance"]
             price = challenge["price"]
             price_str = f"${price}" if price else "free"
@@ -271,7 +285,7 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
                 f"✅ A trader just passed the @ProprXYZ {dname} Challenge!",
                 timestamp,
                 "",
-                f"{price_str} challenge 👉 ${funded:,} funded account",
+                f"{emoji} {price_str} challenge 👉 ${funded:,} funded account",
             ]
             if stat:
                 lines += ["", stat]
@@ -299,24 +313,25 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
         if len(unique_variants) == 1:
             challenge = challenges[unique_variants[0]]
             dname = display_name(challenge)
+            emoji = challenge_emoji(challenge["slug"])
             funded = challenge["fundedBalance"]
             price = challenge["price"]
-            cstat = compact_stat_line(b, pass_rates)
+            stat = pass_rate_line_short(challenge["slug"], pass_rates)
             if funded is not None:
                 price_str = f"${price}" if price else "free"
                 lines = [
                     f"✅ {count} traders recently passed their @ProprXYZ {dname} Challenge",
                     "",
-                    f"{price_str} challenge 👉 {fmt_funded(funded)} funded — each",
+                    f"{emoji} {price_str} challenge 👉 {funded_k(funded)} funded — each",
                 ]
-                if cstat:
-                    lines.append(cstat)
+                if stat:
+                    lines.append(stat)
                 lines += ["", "Stay liquid 💧 $PROPR"]
                 return "\n".join(lines), b
             else:
-                lines = [f"✅ {count} traders recently passed their @ProprXYZ {dname}", ""]
-                if cstat:
-                    lines.append(cstat)
+                lines = [f"✅ {count} traders just passed their @ProprXYZ {dname}", timestamp]
+                if stat:
+                    lines += ["", stat]
                 lines += ["", "Stay liquid 💧 $PROPR"]
                 return "\n".join(lines), "free-trial"
 
@@ -326,17 +341,18 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
         for cid in sorted_variants:
             n = variant_counts[cid]
             ch = challenges[cid]
+            emoji = challenge_emoji(ch["slug"])
             dname = display_name(ch)
             funded = ch["fundedBalance"]
             price = ch["price"]
             if funded is not None:
                 price_str = f"${price}" if price else "free"
-                lines.append(f"{n}x {dname}, {price_str} challenge 👉 {fmt_funded(funded)} funded")
+                lines.append(f"{emoji} {n}x {dname}, {price_str} challenge 👉 {funded_k(funded)} funded")
             else:
-                lines.append(f"{n}x {dname}")
-        cstat = compact_stat_line(b, pass_rates)
-        if cstat:
-            lines.append(cstat)
+                lines.append(f"{n}x {dname} Challenge")
+        stat = pass_rate_line_short(challenges[sorted_variants[0]]["slug"], pass_rates)
+        if stat:
+            lines += ["", stat]
         lines += ["", "Stay liquid 💧 $PROPR"]
         return "\n".join(lines), b
 
@@ -356,18 +372,19 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
         for cid in sorted_variants:
             n = variant_counts[cid]
             ch = challenges[cid]
+            emoji = challenge_emoji(ch["slug"])
             dname = display_name(ch)
             funded = ch["fundedBalance"]
             price = ch["price"]
             if funded is not None:
                 price_str = f"${price}" if price else "free"
-                lines.append(f"{n}x {dname}, {price_str} challenge 👉 {fmt_funded(funded)} funded")
+                lines.append(f"{emoji} {n}x {dname}, {price_str} challenge 👉 {funded_k(funded)} funded")
             else:
-                lines.append(f"{n}x {dname}")
+                lines.append(f"{n}x {dname} Challenge")
 
-        cstat = compact_stat_line(b, pass_rates)
-        if cstat:
-            lines.append(cstat)
+        stat = pass_rate_line_short(challenges[sorted_variants[0]]["slug"], pass_rates)
+        if stat:
+            lines += ["", stat]
         lines.append("")
 
     if unknown_count:
