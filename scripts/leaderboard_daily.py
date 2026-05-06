@@ -57,11 +57,11 @@ def format_tweet_line(entry):
     return f"{medal} {entry['username']} — {sign}${entry['pnl']:,.0f} ({sign}{entry['pct']:.2f}%) | {entry['challenge']}"
 
 
-def format_tweet(top3, total):
+def format_tweet(top3):
     lines = (
         ["🏆 @ProprXYZ Daily Leaderboard", ""]
         + [format_tweet_line(e) for e in top3]
-        + ["", f"{total:,} traders competing 📊", "", "Stay liquid 💧 $PROPR"]
+        + ["", "Stay liquid 💧 $PROPR"]
     )
     return "\n".join(lines)
 
@@ -99,7 +99,7 @@ def main():
     image_path = generate(entries)
     media_id = upload_media(session, image_path)
 
-    tweet = format_tweet(top3, total)
+    tweet = format_tweet(top3)
     print(f"Posting daily leaderboard tweet:\n{tweet}\n")
     post_tweet(session, tweet, media_id=media_id)
     print("Posted daily leaderboard tweet")
