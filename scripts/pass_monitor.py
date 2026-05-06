@@ -207,7 +207,7 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
             else:
                 lines = [f"✅ {count} traders just passed their @ProprXYZ {dname}", timestamp]
                 if stat:
-                    lines += ["", stat]
+                    lines.append(stat)
                 lines += ["", "Stay liquid 💧 $PROPR"]
                 return "\n".join(lines), "free-trial"
 
@@ -228,7 +228,7 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
                 lines.append(f"{n}x {dname} Challenge")
         stat = pass_rate_line_short(challenges[sorted_variants[0]]["slug"], pass_rates)
         if stat:
-            lines += ["", stat]
+            lines.append(stat)
         lines += ["", "Stay liquid 💧 $PROPR"]
         return "\n".join(lines), b
 
@@ -260,7 +260,7 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
 
         stat = pass_rate_line_short(challenges[sorted_variants[0]]["slug"], pass_rates)
         if stat:
-            lines += ["", stat]
+            lines.append(stat)
         lines.append("")
 
     if unknown_count:
