@@ -59,21 +59,16 @@ def post_tweet(session, text, image_name=None):
 def format_payout_tweet(payout, stats):
     from datetime import datetime, timezone
     amount = payout["amount"]
-    trader = payout["anon_user"]
     total_paid = stats["totalPaid"]
     total_count = stats["totalCount"]
     tx_hash = payout["tx_hash"]
-    badge = payout.get("badge", "")
 
     paid_at = datetime.fromisoformat(payout["paid_at"]).astimezone(timezone.utc)
-    date_str = paid_at.strftime("%b %-d, %H:%M UTC")
-
-    trader_line = f"{trader} - {badge.lower()} ✅" if badge else trader
+    date_str = f"{paid_at.strftime('%b')} {paid_at.day}, {paid_at.strftime('%H:%M UTC')}"
 
     lines = [
         f"💸 @ProprXYZ just paid out ${amount:,.2f} USDC to a funded trader",
         "",
-        trader_line,
         f"⏱️ {date_str}",
         "",
         f"Tx: https://etherscan.io/tx/{tx_hash}",
