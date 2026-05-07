@@ -1,10 +1,14 @@
 import json
 import os
+import sys
 import time
 import requests
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 from requests_oauthlib import OAuth1Session
+
+sys.path.insert(0, str(Path(__file__).parent))
+from pass_image import generate as generate_pass_image
 
 BASE_URL = "https://www.propr.xyz"
 ACTIVITY_STATE_FILE = Path(__file__).parent.parent / "state" / "last_activity_id.txt"
@@ -41,8 +45,8 @@ def read_state(path):
     return content if content else None
 
 
-def upload_media(session, image_name):
-    path = IMAGES_DIR / f"{image_name}.png"
+def upload_media(session, image_path):
+    path = Path(image_path)
     if not path.exists():
         return None
     with open(path, "rb") as f:
@@ -51,10 +55,10 @@ def upload_media(session, image_name):
     return resp.json()["data"]["id"]
 
 
-def post_tweet(session, text, image_name=None):
+def post_tweet(session, text, image_path=None):
     body = {"text": text}
-    if image_name:
-        media_id = upload_media(session, image_name)
+    if image_path:
+        media_id = upload_media(session, image_path)
         if media_id:
             body["media"] = {"media_ids": [media_id]}
     resp = session.post(f"{TWITTER_BASE}/tweets", json=body)
@@ -129,10 +133,9 @@ def pass_rate_line_short(slug, pass_rates):
 
 
 def format_pass_tweet(new_passes, challenges, pass_rates):
-    from collections import defaultdict
     from datetime import datetime, timezone
     occurred_at = datetime.fromisoformat(new_passes[0]["occurredAt"].replace("Z", "+00:00")).astimezone(timezone.utc)
-    timestamp = f"⏱️ {occurred_at.strftime('%b %-d, %H:%M UTC')}"
+    timestamp = f"⏱️ {occurred_at.strftime('%b')} {occurred_at.day}, {occurred_at.strftime('%H:%M UTC')}"
     count = len(new_passes)
 
     base_groups = defaultdict(list)
@@ -271,6 +274,30 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
     return "\n".join(lines), "mixed"
 
 
+def build_challenge_cards(passes, challenges, pass_rates):
+    groups = defaultdict(list)
+    for event in passes:
+        ch = challenges.get(event["challengeId"])
+        if ch:
+            groups[base_slug(ch["slug"])].append(ch)
+    if not groups:
+        return []
+    cards = []
+    for b, chs in groups.items():
+        rep = max(chs, key=lambda c: c.get("fundedBalance") or 0)
+        stats = pass_rates.get(b, {"attempts": 0, "passed": 0})
+        cards.append({
+            "base_slug": b,
+            "name": display_name(rep),
+            "price": rep.get("price"),
+            "funded": rep.get("fundedBalance"),
+            "attempts": stats["attempts"],
+            "passed": stats["passed"],
+        })
+    cards.sort(key=lambda c: c.get("funded") or 0, reverse=True)
+    return cards[:3]
+
+
 def check_passes(session, challenges):
     data = fetch("/api/propr/v1/stats/activity?limit=20&types=passed")
     events = data["events"]
@@ -306,9 +333,11 @@ def check_passes(session, challenges):
     ACTIVITY_STATE_FILE.write_text(events[0]["attemptId"])
 
     if gold_passes:
-        tweet, image_name = format_pass_tweet(gold_passes, challenges, pass_rates)
+        cards = build_challenge_cards(gold_passes, challenges, pass_rates)
+        image_path = generate_pass_image(cards) if cards else None
+        tweet, _ = format_pass_tweet(gold_passes, challenges, pass_rates)
         print(f"Posting Gold pass tweet:\n{tweet}\n")
-        post_tweet(session, tweet, image_name)
+        post_tweet(session, tweet, image_path)
         print(f"Posted Gold pass tweet for {len(gold_passes)} event(s)")
         tweets_posted += 1
 
@@ -316,9 +345,11 @@ def check_passes(session, challenges):
         if tweets_posted > 0:
             print("Waiting 60s before non-Gold pass tweet...")
             time.sleep(60)
-        tweet, image_name = format_pass_tweet(other_passes, challenges, pass_rates)
+        cards = build_challenge_cards(other_passes, challenges, pass_rates)
+        image_path = generate_pass_image(cards) if cards else None
+        tweet, _ = format_pass_tweet(other_passes, challenges, pass_rates)
         print(f"Posting pass tweet:\n{tweet}\n")
-        post_tweet(session, tweet, image_name)
+        post_tweet(session, tweet, image_path)
         print(f"Posted pass tweet for {len(other_passes)} event(s)")
 
 

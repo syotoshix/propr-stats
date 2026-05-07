@@ -2,4 +2,5 @@ __pycache__/
 *.pyc
 .env
 images/*_generated.png
+images/*-generated.png
 .claude/
