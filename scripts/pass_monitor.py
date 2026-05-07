@@ -205,7 +205,7 @@ def format_pass_tweet(new_passes, challenges, pass_rates):
                 lines += ["", "Stay liquid 💧 $PROPR"]
                 return "\n".join(lines), b
             else:
-                lines = [f"✅ {count} traders just passed their @ProprXYZ {dname}", timestamp]
+                lines = [f"✅ {count} traders just passed their @ProprXYZ {dname}", timestamp, ""]
                 if stat:
                     lines.append(stat)
                 lines += ["", "Stay liquid 💧 $PROPR"]

@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 import sys
@@ -78,12 +79,10 @@ def save_state(path, data):
     ]))
 
 
-def find_biggest_change(old_state, new_data):
-    old_by_rank = {e["rank"]: e["username"] for e in old_state}
-    for entry in new_data[:3]:
-        if old_by_rank.get(entry["rank"]) != entry["trader"]["username"]:
-            return entry["rank"]
-    return None
+def top1_changed(old_state, new_data):
+    old_top1 = next((e["username"] for e in old_state if e["rank"] == 1), None)
+    new_top1 = new_data[0]["trader"]["username"] if new_data else None
+    return old_top1 != new_top1
 
 
 def format_entry_line(entry):
@@ -92,16 +91,10 @@ def format_entry_line(entry):
     return f"{medal} {entry['username']} — {sign}${entry['pnl']:,.0f} ({sign}{entry['pct']:.2f}%)"
 
 
-def format_change_tweet(changed_rank, top3, period):
+def format_change_tweet(top3, period):
     label = PERIOD_LABEL[period]
-    changer = next(e for e in top3 if e["rank"] == changed_rank)
-    name = changer["username"]
-
-    if changed_rank == 3:
-        headline = f"🔥 {name} just entered the @ProprXYZ {label} top 3 at #3!"
-    else:
-        headline = f"🔥 {name} just took #{changed_rank} on the @ProprXYZ {label} Leaderboard!"
-
+    name = top3[0]["username"]
+    headline = f"🔥 {name} just took the number #1 spot on the @ProprXYZ {label} Leaderboard!"
     lines = [headline, ""] + [format_entry_line(e) for e in top3] + ["", "Stay liquid 💧 $PROPR"]
     return "\n".join(lines)
 
@@ -140,26 +133,30 @@ def check_period(session, period, state_file):
         print(f"First run ({period}) — saved initial state")
         return
 
-    changed_rank = find_biggest_change(old_state, raw_data)
+    changed = top1_changed(old_state, raw_data)
     save_state(state_file, raw_data)
 
-    if changed_rank is None:
-        print(f"No top-3 changes ({period})")
+    if not changed:
+        print(f"No #1 change ({period})")
         return
 
     image_path = generate(entries, template_name=PERIOD_TEMPLATE[period], out_name=PERIOD_OUT[period])
     media_id = upload_media(session, image_path)
 
-    tweet = format_change_tweet(changed_rank, top3, period)
+    tweet = format_change_tweet(top3, period)
     print(f"Posting {period} leaderboard change tweet:\n{tweet}\n")
     post_tweet(session, tweet, media_id=media_id)
-    print(f"Posted {period} leaderboard change tweet (changed rank: #{changed_rank})")
+    print(f"Posted {period} leaderboard change tweet (new #1: {top3[0]['username']})")
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--period", choices=["weekly", "all_time"], required=True)
+    args = parser.parse_args()
+
+    state_file = WEEKLY_STATE_FILE if args.period == "weekly" else ALLTIME_STATE_FILE
     session = get_session()
-    check_period(session, "weekly", WEEKLY_STATE_FILE)
-    check_period(session, "all_time", ALLTIME_STATE_FILE)
+    check_period(session, args.period, state_file)
 
 
 if __name__ == "__main__":
