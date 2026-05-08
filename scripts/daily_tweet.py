@@ -5,6 +5,9 @@ from pathlib import Path
 from datetime import datetime, timedelta, timezone
 from requests_oauthlib import OAuth1Session
 
+sys.path.insert(0, str(Path(__file__).parent))
+from daily_stats_image import build_daily_data, generate as generate_daily_image
+
 BASE_URL = "https://www.propr.xyz"
 IMAGES_DIR = Path(__file__).parent.parent / "images"
 DAILY_STATE_FILE = Path(__file__).parent.parent / "state" / "last_daily_date.txt"
@@ -21,8 +24,8 @@ def get_session():
     )
 
 
-def upload_media(session, image_name):
-    path = IMAGES_DIR / f"{image_name}.png"
+def upload_media(session, image_path):
+    path = Path(image_path)
     if not path.exists():
         return None
     with open(path, "rb") as f:
@@ -64,13 +67,13 @@ def main():
         print(f"Daily tweet already posted for {yesterday}, skipping")
         sys.exit(0)
 
-    traders_data = fetch("/api/propr/v1/stats/traders/history?days=2")
+    traders_data = fetch("/api/propr/v1/stats/traders/history?days=8")
     trader_day = find_day(traders_data["history"], yesterday)
     if not trader_day:
         print(f"No trader data for {yesterday}, skipping")
         sys.exit(0)
 
-    purchases_data = fetch("/api/propr/v1/stats/challenges/purchases/history?days=2")
+    purchases_data = fetch("/api/propr/v1/stats/challenges/purchases/history?days=8")
     total_purchases = sum(
         next((d["purchases"] for d in ch["history"] if d["date"] == yesterday), 0)
         for ch in purchases_data["byChallenge"]
@@ -78,6 +81,12 @@ def main():
 
     pnl_data = fetch("/api/propr/v1/stats/pnl/aggregated?days=2")
     pnl_day = find_day(pnl_data["overall"], yesterday)
+
+    payout_data = fetch("/api/transparency/payouts")
+    cum_payouts = sum(
+        float(p["amount"]) for p in payout_data["recent"]
+        if p["paid_at"][:10] == yesterday
+    )
 
     pass_data = fetch("/api/propr/v1/stats/challenges/pass-rate/history?days=3")
     pass_yesterday = find_day(pass_data["overall"], yesterday)
@@ -93,7 +102,8 @@ def main():
         else (pass_yesterday["passed"] if pass_yesterday else 0)
     )
 
-    date_str = datetime.strptime(yesterday, "%Y-%m-%d").strftime("%b %-d")
+    dt = datetime.strptime(yesterday, "%Y-%m-%d")
+    date_str = f"{dt.strftime('%b')} {dt.day}"
 
     lines = [f"Daily @ProprXYZ trader stats - $PROPR {date_str}", ""]
 
@@ -114,7 +124,17 @@ def main():
     print(f"Posting tweet:\n{tweet}\n")
 
     session = get_session()
-    media_id = upload_media(session, "daily")
+    try:
+        daily_by_tier = build_daily_data(purchases_data, days=8)
+        daily_by_tier = {d: v for d, v in daily_by_tier.items() if d <= yesterday}
+        daily_by_tier = dict(list(daily_by_tier.items())[-7:])
+        traders_by_date = {d["date"]: d["totalTraders"] for d in traders_data["history"] if d["date"] <= yesterday}
+        new_traders_by_date = {d["date"]: d["newTraders"] for d in traders_data["history"] if d["date"] <= yesterday}
+        image_path = generate_daily_image(daily_by_tier, yesterday, traders_by_date, new_traders_by_date, passes, pnl_day, cum_payouts)
+    except Exception as e:
+        print(f"Image generation failed ({e}), using fallback")
+        image_path = str(IMAGES_DIR / "daily.png")
+    media_id = upload_media(session, image_path)
     tweet_id = post_tweet(session, tweet, media_id)
     DAILY_STATE_FILE.write_text(yesterday)
     print(f"Daily tweet posted for {yesterday}: {tweet_id}")
