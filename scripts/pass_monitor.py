@@ -1,7 +1,6 @@
 import json
 import os
 import sys
-import time
 import requests
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -323,34 +322,16 @@ def check_passes(session, challenges):
         print("No new pass events")
         return
 
-    gold_ids = {k for k, v in challenges.items() if v["slug"].startswith("gold-")}
-    gold_passes = [e for e in new_passes if e["challengeId"] in gold_ids]
-    other_passes = [e for e in new_passes if e["challengeId"] not in gold_ids]
-
     pass_rates = fetch_pass_rates()
-    tweets_posted = 0
 
     ACTIVITY_STATE_FILE.write_text(events[0]["attemptId"])
 
-    if gold_passes:
-        cards = build_challenge_cards(gold_passes, challenges, pass_rates)
-        image_path = generate_pass_image(cards) if cards else None
-        tweet, _ = format_pass_tweet(gold_passes, challenges, pass_rates)
-        print(f"Posting Gold pass tweet:\n{tweet}\n")
-        post_tweet(session, tweet, image_path)
-        print(f"Posted Gold pass tweet for {len(gold_passes)} event(s)")
-        tweets_posted += 1
-
-    if other_passes:
-        if tweets_posted > 0:
-            print("Waiting 60s before non-Gold pass tweet...")
-            time.sleep(60)
-        cards = build_challenge_cards(other_passes, challenges, pass_rates)
-        image_path = generate_pass_image(cards) if cards else None
-        tweet, _ = format_pass_tweet(other_passes, challenges, pass_rates)
-        print(f"Posting pass tweet:\n{tweet}\n")
-        post_tweet(session, tweet, image_path)
-        print(f"Posted pass tweet for {len(other_passes)} event(s)")
+    cards = build_challenge_cards(new_passes, challenges, pass_rates)
+    image_path = generate_pass_image(cards) if cards else None
+    tweet, _ = format_pass_tweet(new_passes, challenges, pass_rates)
+    print(f"Posting pass tweet:\n{tweet}\n")
+    post_tweet(session, tweet, image_path)
+    print(f"Posted pass tweet for {len(new_passes)} event(s)")
 
 
 def main():
