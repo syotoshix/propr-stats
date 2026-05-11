@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '*/15 * * * *'  # every 15 minutes
   workflow_dispatch:
+    inputs:
+      manual_payouts:
+        description: 'JSON array of payouts to post manually (leave empty for normal run)'
+        required: false
+        default: ''
 
 jobs:
   monitor:
@@ -26,12 +31,17 @@ jobs:
           TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
           TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
           TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
-        run: python scripts/payout_monitor.py
+        run: |
+          if [ -n "${{ inputs.manual_payouts }}" ]; then
+            python scripts/payout_monitor.py --manual '${{ inputs.manual_payouts }}'
+          else
+            python scripts/payout_monitor.py
+          fi
 
       - name: Commit updated state
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add state/last_payout_id.txt
+          git add state/last_payout_id.txt state/tweeted_tx_hashes.txt
           git diff --staged --quiet || git commit -m "chore: update payout state"
           git pull --rebase && git push
