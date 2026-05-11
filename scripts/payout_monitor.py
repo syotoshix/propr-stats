@@ -180,8 +180,12 @@ def manual_payouts_cmd(session, payouts_json):
         p["amount"] = float(p["amount"])
 
     data = fetch("/api/transparency/payouts")
-    stats = data["stats"]
     all_api_payouts = data["recent"]
+    api_stats = data["stats"]
+    stats = {
+        "totalPaid": api_stats["totalPaid"] + sum(p["amount"] for p in payouts),
+        "totalCount": api_stats["totalCount"] + len(payouts),
+    }
 
     tweeted_hashes = load_tweeted_hashes()
     qualifying = [
