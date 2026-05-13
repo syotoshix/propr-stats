@@ -159,9 +159,7 @@ def _do_post(session, qualifying, all_payouts, stats, small_payouts=None):
     post_tweet(session, tweet, image_path)
 
 
-def combined_stats(new_processed):
-    old_data = fetch("/api/transparency/payouts")
-    old_payouts = old_data["recent"]
+def combined_stats(new_processed, old_payouts):
     seen = {p["tx_hash"]: float(p["amount"]) for p in old_payouts}
     for p in new_processed:
         seen[p["txHash"]] = float(p["userAmount"])
@@ -177,7 +175,11 @@ def check_payouts(session):
         return
 
     all_normalized = [normalize_payout(p) for p in processed]
-    stats = combined_stats(processed)
+
+    old_data = fetch("/api/transparency/payouts")
+    old_normalized = [{"amount": float(p["amount"]), "paid_at": p["paid_at"], "tx_hash": p["tx_hash"]} for p in old_data["recent"]]
+    stats = combined_stats(processed, old_data["recent"])
+    all_payouts_for_chart = old_normalized + all_normalized
 
     tweeted_hashes = load_tweeted_hashes()
     new_raw = [p for p in processed if p["txHash"] not in tweeted_hashes]
@@ -199,7 +201,7 @@ def check_payouts(session):
         print(f"No qualifying payouts to tweet ({len(small)} below $100 skipped)")
         return
 
-    _do_post(session, qualifying, all_normalized, stats, small_payouts=small if small else None)
+    _do_post(session, qualifying, all_payouts_for_chart, stats, small_payouts=small if small else None)
     print(f"Posted payout tweet for {len(qualifying)} payout(s), mentioned {len(small)} smaller ones")
 
 
@@ -212,8 +214,9 @@ def manual_payouts_cmd(session, payouts_json):
     processed = [p for p in raw if p["status"] == "processed" and p.get("txHash")]
     all_api_normalized = [normalize_payout(p) for p in processed]
 
-    base_stats = combined_stats(processed)
-    manual_hashes = {p["tx_hash"] for p in payouts if p.get("tx_hash")}
+    old_data = fetch("/api/transparency/payouts")
+    old_normalized = [{"amount": float(p["amount"]), "paid_at": p["paid_at"], "tx_hash": p["tx_hash"]} for p in old_data["recent"]]
+    base_stats = combined_stats(processed, old_data["recent"])
     extra = [p for p in payouts if p.get("tx_hash") not in {p2["txHash"] for p2 in processed}]
     stats = {
         "totalPaid": base_stats["totalPaid"] + sum(p["amount"] for p in extra),
@@ -232,7 +235,7 @@ def manual_payouts_cmd(session, payouts_json):
         print("No qualifying payouts (all below $100 or already tweeted)")
         return
 
-    all_payouts = all_api_normalized + payouts
+    all_payouts = old_normalized + all_api_normalized + payouts
 
     _do_post(session, qualifying, all_payouts, stats)
 
