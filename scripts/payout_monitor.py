@@ -10,8 +10,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 from payout_image import generate as generate_payout_image
 
 BASE_URL = "https://www.propr.xyz"
-PAYOUT_STATE_FILE = Path(__file__).parent.parent / "state" / "last_payout_id.txt"
 TX_HASHES_FILE = Path(__file__).parent.parent / "state" / "tweeted_tx_hashes.txt"
+PAYOUT_USERS_FILE = Path(__file__).parent.parent / "state" / "payout_users.txt"
 IMAGES_DIR = Path(__file__).parent.parent / "images"
 TWITTER_BASE = "https://api.x.com/2"
 TWITTER_UPLOAD = "https://api.x.com/2/media/upload"
@@ -32,13 +32,6 @@ def fetch(path):
     return resp.json()
 
 
-def read_state(path):
-    if not path.exists():
-        return None
-    content = path.read_text().strip()
-    return content if content else None
-
-
 def load_tweeted_hashes():
     if not TX_HASHES_FILE.exists():
         return set()
@@ -47,6 +40,41 @@ def load_tweeted_hashes():
 
 def save_tweeted_hashes(hashes):
     TX_HASHES_FILE.write_text("\n".join(sorted(hashes)))
+
+
+def normalize_payout(p):
+    return {
+        "id": p["payoutId"],
+        "amount": float(p["userAmount"]),
+        "paid_at": p["processedAt"],
+        "tx_hash": p["txHash"],
+    }
+
+
+def save_payout_users(payouts_raw):
+    existing_payout_ids = set()
+    lines = []
+    if PAYOUT_USERS_FILE.exists():
+        for line in PAYOUT_USERS_FILE.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                lines.append(line)
+                existing_payout_ids.add(line.split("\t")[0])
+
+    for p in payouts_raw:
+        payout_id = p.get("payoutId", "")
+        if payout_id in existing_payout_ids:
+            continue
+        user_id = p.get("userId", "")
+        profile = (p.get("user") or {}).get("profile") or {}
+        credential = p.get("credential") or {}
+        name = profile.get("name", "")
+        username = profile.get("username", "")
+        wallet = credential.get("address", "")
+        amount = p.get("userAmount", "")
+        lines.append(f"{payout_id}\t{user_id}\t{name}\t{username}\t{wallet}\t${amount}")
+        existing_payout_ids.add(payout_id)
+
+    PAYOUT_USERS_FILE.write_text("\n".join(lines), encoding="utf-8")
 
 
 def upload_media(session, image_path):
@@ -72,7 +100,7 @@ def post_tweet(session, text, image_path=None):
     return resp.json()["data"]["id"]
 
 
-def format_payout_tweet(payouts, stats):
+def format_payout_tweet(payouts, stats, small_payouts=None):
     from datetime import datetime, timezone
     total_paid = stats["totalPaid"]
     total_count = stats["totalCount"]
@@ -87,10 +115,6 @@ def format_payout_tweet(payouts, stats):
             f"⏱️ {date_str}",
             "",
             f"Tx: https://etherscan.io/tx/{payout['tx_hash']}",
-            "",
-            f"${total_paid:,.2f} paid to {total_count} funded traders so far! 💰",
-            "",
-            "Stay liquid 💧 $PROPR",
         ]
     else:
         total_amount = sum(float(p["amount"]) for p in payouts)
@@ -104,19 +128,28 @@ def format_payout_tweet(payouts, stats):
             lines.append(f"🔵 ${float(p['amount']):,.2f} USDC - ⏱️ {p_date}")
             lines.append(f"Tx: https://etherscan.io/tx/{p['tx_hash']}")
             lines.append("")
+        lines.append(f"Total: ${total_amount:,.2f} USDC 💰")
+
+    if small_payouts:
+        small_total = sum(float(p["amount"]) for p in small_payouts)
+        n = len(small_payouts)
         lines += [
-            f"Total: ${total_amount:,.2f} USDC 💰",
             "",
-            f"${total_paid:,.2f} paid to {total_count} funded traders so far!",
-            "",
-            "Stay liquid 💧 $PROPR",
+            f"{n} smaller payout{'s' if n > 1 else ''} detected (< $100) total ${small_total:,.2f} USDC",
         ]
+
+    lines += [
+        "",
+        f"${total_paid:,.2f} paid to {total_count} funded traders so far! 💰",
+        "",
+        "Stay liquid 💧 $PROPR",
+    ]
 
     return "\n".join(lines)
 
 
-def _do_post(session, qualifying, all_payouts, stats):
-    tweet = format_payout_tweet(qualifying, stats)
+def _do_post(session, qualifying, all_payouts, stats, small_payouts=None):
+    tweet = format_payout_tweet(qualifying, stats, small_payouts)
     try:
         image_path = generate_payout_image(qualifying, all_payouts)
     except Exception as e:
@@ -125,53 +158,49 @@ def _do_post(session, qualifying, all_payouts, stats):
     print(f"Posting payout tweet:\n{tweet}\n")
     post_tweet(session, tweet, image_path)
 
-    tweeted_hashes = load_tweeted_hashes()
-    new_hashes = tweeted_hashes | {p["tx_hash"] for p in qualifying if p.get("tx_hash")}
-    save_tweeted_hashes(new_hashes)
+
+def combined_stats(new_processed):
+    old_data = fetch("/api/transparency/payouts")
+    old_payouts = old_data["recent"]
+    seen = {p["tx_hash"]: float(p["amount"]) for p in old_payouts}
+    for p in new_processed:
+        seen[p["txHash"]] = float(p["userAmount"])
+    return {"totalPaid": sum(seen.values()), "totalCount": len(seen)}
 
 
 def check_payouts(session):
-    data = fetch("/api/transparency/payouts")
-    recent = data["recent"]
-    stats = data["stats"]
+    raw = fetch("/api/transparency/api-payouts")
+    processed = [p for p in raw if p["status"] == "processed" and p.get("txHash")]
 
-    if not recent:
-        print("No payouts found")
+    if not processed:
+        print("No processed payouts found")
         return
 
-    last_id = read_state(PAYOUT_STATE_FILE)
+    all_normalized = [normalize_payout(p) for p in processed]
+    stats = combined_stats(processed)
 
-    if last_id is None:
-        PAYOUT_STATE_FILE.write_text(recent[0]["id"])
-        print(f"First run (payouts) — saved initial state: {recent[0]['id']}")
-        return
+    tweeted_hashes = load_tweeted_hashes()
+    new_raw = [p for p in processed if p["txHash"] not in tweeted_hashes]
 
-    new_payouts = []
-    for payout in recent:
-        if payout["id"] == last_id:
-            break
-        new_payouts.append(payout)
-
-    if not new_payouts:
+    if not new_raw:
         print("No new payouts")
         return
 
-    PAYOUT_STATE_FILE.write_text(recent[0]["id"])
+    save_payout_users(new_raw)
 
-    tweeted_hashes = load_tweeted_hashes()
-    qualifying = [
-        p for p in reversed(new_payouts)
-        if float(p["amount"]) >= 100 and p.get("tx_hash") not in tweeted_hashes
-    ]
-    skipped = len(new_payouts) - len(qualifying)
-    if skipped:
-        print(f"Skipping {skipped} payout(s) (below $100 or already tweeted)")
+    qualifying = [normalize_payout(p) for p in new_raw if float(p["userAmount"]) >= 100]
+    small = [normalize_payout(p) for p in new_raw if float(p["userAmount"]) < 100]
+
+    # Save hashes for all new payouts (including sub-$100) to avoid re-checking
+    new_hashes = tweeted_hashes | {p["txHash"] for p in new_raw}
+    save_tweeted_hashes(new_hashes)
+
     if not qualifying:
-        print("No qualifying payouts to tweet")
+        print(f"No qualifying payouts to tweet ({len(small)} below $100 skipped)")
         return
 
-    _do_post(session, qualifying, recent, stats)
-    print(f"Posted payout tweet for {len(qualifying)} payout(s)")
+    _do_post(session, qualifying, all_normalized, stats, small_payouts=small if small else None)
+    print(f"Posted payout tweet for {len(qualifying)} payout(s), mentioned {len(small)} smaller ones")
 
 
 def manual_payouts_cmd(session, payouts_json):
@@ -179,12 +208,16 @@ def manual_payouts_cmd(session, payouts_json):
     for p in payouts:
         p["amount"] = float(p["amount"])
 
-    data = fetch("/api/transparency/payouts")
-    all_api_payouts = data["recent"]
-    api_stats = data["stats"]
+    raw = fetch("/api/transparency/api-payouts")
+    processed = [p for p in raw if p["status"] == "processed" and p.get("txHash")]
+    all_api_normalized = [normalize_payout(p) for p in processed]
+
+    base_stats = combined_stats(processed)
+    manual_hashes = {p["tx_hash"] for p in payouts if p.get("tx_hash")}
+    extra = [p for p in payouts if p.get("tx_hash") not in {p2["txHash"] for p2 in processed}]
     stats = {
-        "totalPaid": api_stats["totalPaid"] + sum(p["amount"] for p in payouts),
-        "totalCount": api_stats["totalCount"] + len(payouts),
+        "totalPaid": base_stats["totalPaid"] + sum(p["amount"] for p in extra),
+        "totalCount": base_stats["totalCount"] + len(extra),
     }
 
     tweeted_hashes = load_tweeted_hashes()
@@ -199,10 +232,12 @@ def manual_payouts_cmd(session, payouts_json):
         print("No qualifying payouts (all below $100 or already tweeted)")
         return
 
-    # Combine with API history for the cumulative chart (include all manual payouts, not just qualifying)
-    all_payouts = all_api_payouts + payouts
+    all_payouts = all_api_normalized + payouts
 
     _do_post(session, qualifying, all_payouts, stats)
+
+    new_hashes = tweeted_hashes | {p["tx_hash"] for p in payouts if p.get("tx_hash")}
+    save_tweeted_hashes(new_hashes)
     print(f"Posted manual tweet for {len(qualifying)} payout(s)")
 
 

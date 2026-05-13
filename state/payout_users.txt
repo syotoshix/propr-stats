@@ -1,0 +1,9 @@
+urn:prp-payout:nekKGegJQGTJ	urn:prp-user:xDr8k1KKTJxa	breixo bingx	BasedBuilder	0x9E5DD276d04A5C9eAC90077385590283bc9b662E	$3241.36
+urn:prp-payout:4TY3VA1xk4os	urn:prp-user:gTcvx6NCMWrL	Mathieu Daurade	Findus	0x3B0FC5bE663a5296b10E7f70c542562C798C5c8b	$125.256
+urn:prp-payout:gLrmkZUKRJsY	urn:prp-user:gTcvx6NCMWrL	Mathieu Daurade	Findus	0x3B0FC5bE663a5296b10E7f70c542562C798C5c8b	$43.344
+urn:prp-payout:aHH5RGqS5RCA	urn:prp-user:xDr8k1KKTJxa	breixo bingx	BasedBuilder	0x9E5DD276d04A5C9eAC90077385590283bc9b662E	$1553.112
+urn:prp-payout:mpo9vHsNC3v7	urn:prp-user:gA1y1RZvB3uz	金ツッパ侍侍	CompleteWeasel#9029	0x75a71Db0E02b73400367D32A8F8650f8cA5ed3e1	$1502.56
+urn:prp-payout:nbKDtSGraoHt	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$87.448	@AnthoLGSB
+urn:prp-payout:mCrjYdExYvZ1	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$55.392	@AnthoLGSB
+urn:prp-payout:hsmtKPAL4GRw	urn:prp-user:gA1y1RZvB3uz	金ツッパ侍侍	CompleteWeasel#9029	0x75a71Db0E02b73400367D32A8F8650f8cA5ed3e1	$664.688
+urn:prp-payout:FLrevxQxcySF	urn:prp-user:8K66G27veupL	Stan	FavouriteArmadillo#8626	0xbacDb05C55385c1f4122f466F37d1cfC16EE3198	$85.504
