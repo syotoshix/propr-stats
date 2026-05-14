@@ -7,3 +7,5 @@ urn:prp-payout:nbKDtSGraoHt	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD
 urn:prp-payout:mCrjYdExYvZ1	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$55.392	@AnthoLGSB
 urn:prp-payout:hsmtKPAL4GRw	urn:prp-user:gA1y1RZvB3uz	金ツッパ侍侍	CompleteWeasel#9029	0x75a71Db0E02b73400367D32A8F8650f8cA5ed3e1	$664.688
 urn:prp-payout:FLrevxQxcySF	urn:prp-user:8K66G27veupL	Stan	FavouriteArmadillo#8626	0xbacDb05C55385c1f4122f466F37d1cfC16EE3198	$85.504
+urn:prp-payout:gWPYZz7JbXM2	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$136.504
+urn:prp-payout:bAFQVEn9crRR	urn:prp-user:kNzNg3A6Af5B	RAGER - JUEGOS NFT	UsedBooby#1604	0xc7a82Fb41D61c6C16Bc4541Fb4Cb29F238B76972	$83.984
