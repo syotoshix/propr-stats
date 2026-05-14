@@ -7,7 +7,7 @@ from pathlib import Path
 from requests_oauthlib import OAuth1Session
 
 sys.path.insert(0, str(Path(__file__).parent))
-from leaderboard_image import generate
+from leaderboard_image import generate, generate_alltime
 
 API_BASE = "https://api.propr.xyz"
 STATE_DIR = Path(__file__).parent.parent / "state"
@@ -88,13 +88,13 @@ def top1_changed(old_state, new_data):
 def format_entry_line(entry):
     medal = MEDAL[entry["rank"]]
     sign = "+" if entry["pnl"] >= 0 else ""
-    return f"{medal} {entry['username']} — {sign}${entry['pnl']:,.0f} ({sign}{entry['pct']:.2f}%)"
+    return f"{medal} {entry['username']} {sign}${entry['pnl']:,.0f} ({sign}{entry['pct']:.2f}%)"
 
 
 def format_change_tweet(top3, period):
     label = PERIOD_LABEL[period]
     name = top3[0]["username"]
-    headline = f"🔥 {name} just took the number #1 spot on the @ProprXYZ {label} Leaderboard!"
+    headline = f"🔥 {name} just took the number #1 spot on the \n@ProprXYZ {label} Leaderboard!"
     lines = [headline, ""] + [format_entry_line(e) for e in top3] + ["", "Stay liquid 💧 $PROPR"]
     return "\n".join(lines)
 
@@ -140,7 +140,10 @@ def check_period(session, period, state_file):
         print(f"No #1 change ({period})")
         return
 
-    image_path = generate(entries, template_name=PERIOD_TEMPLATE[period], out_name=PERIOD_OUT[period])
+    if period == "all_time":
+        image_path = generate_alltime(top3, out_name=PERIOD_OUT[period])
+    else:
+        image_path = generate(entries, template_name=PERIOD_TEMPLATE[period], out_name=PERIOD_OUT[period])
     media_id = upload_media(session, image_path)
 
     tweet = format_change_tweet(top3, period)
