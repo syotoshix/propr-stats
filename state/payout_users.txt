@@ -11,3 +11,13 @@ urn:prp-payout:gWPYZz7JbXM2	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD
 urn:prp-payout:bAFQVEn9crRR	urn:prp-user:kNzNg3A6Af5B	RAGER - JUEGOS NFT	UsedBooby#1604	0xc7a82Fb41D61c6C16Bc4541Fb4Cb29F238B76972	$83.984
 urn:prp-payout:LYv6ktGrayx7	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$57.592
 urn:prp-payout:j2BqdB4c9Bf2	urn:prp-user:gA1y1RZvB3uz	金ツッパ侍侍	CompleteWeasel#9029	0x75a71Db0E02b73400367D32A8F8650f8cA5ed3e1	$1064.224
+urn:prp-payout:ZtcaDWs9pjVS	urn:prp-user:gTcvx6NCMWrL	Mathieu Daurade	Findus	0x3B0FC5bE663a5296b10E7f70c542562C798C5c8b	$41.848
+urn:prp-payout:vnnjqPcoFJ7v	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$66.304
+urn:prp-payout:q4C1nn7wq1Gb	urn:prp-user:gTcvx6NCMWrL	Mathieu Daurade	Findus	0x3B0FC5bE663a5296b10E7f70c542562C798C5c8b	$44.272
+urn:prp-payout:W6nLAZ7GZ78r	urn:prp-user:gA1y1RZvB3uz	金ツッパ侍侍	CompleteWeasel#9029	0x75a71Db0E02b73400367D32A8F8650f8cA5ed3e1	$926.2
+urn:prp-payout:UxCYYbwmgUVt	urn:prp-user:8K66G27veupL	Stan	FavouriteArmadillo#8626	0xbacDb05C55385c1f4122f466F37d1cfC16EE3198	$142.944
+urn:prp-payout:tMQ4kbqDLkwB	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$119.68
+urn:prp-payout:ok1TsDuXzK1P	urn:prp-user:kNzNg3A6Af5B	RAGER - JUEGOS NFT	UsedBooby#1604	0xc7a82Fb41D61c6C16Bc4541Fb4Cb29F238B76972	$315.272
+urn:prp-payout:TgLiH2h2jJm7	urn:prp-user:UdfLaVn5VqRU	Yohann	OptimisticWildebeest#4919	0xCa09D245A82Ff9A44Cb57d9C2c5CD6B202448d60	$85.704
+urn:prp-payout:JGpF3XGyzs4i	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$184.256
+urn:prp-payout:LJSqVrtNTctB	urn:prp-user:iPzsu82r7cMW	Dobromir Nikov	Karavanata	0xb1Cc5237676632B3e9767e8230390Da1e901E587	$116.728
