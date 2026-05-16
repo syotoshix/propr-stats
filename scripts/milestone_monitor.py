@@ -73,11 +73,11 @@ def post_tweet(session, text, image_path):
 def format_tweet(milestone_type, value):
     amount = format_amount(value, milestone_type)
     if milestone_type == "revenue":
-        return f"Crypto Prop Firm @ProprXYZ surpassed {amount} in Total Cumulative Revenue"
+        return f"Crypto Prop Firm on HyperLiquid $HYPE has surpassed {amount} in Total Cumulative Revenue @ProprXYZ"
     elif milestone_type == "traders":
-        return f"Crypto Prop Firm @ProprXYZ surpassed {amount} Total Traders"
+        return f"Crypto Prop Firm on HyperLiquid $HYPE has surpassed {amount} Total Traders @ProprXYZ"
     elif milestone_type == "capital":
-        return f"Crypto Prop Firm @ProprXYZ surpassed {amount} in Active Funded Capital"
+        return f"Crypto Prop Firm on HyperLiquid $HYPE has surpassed {amount} in Active Funded Capital @ProprXYZ"
 
 
 def check_milestones(session):
