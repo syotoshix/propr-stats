@@ -54,7 +54,7 @@ def to_entry(item):
 def format_tweet_line(entry):
     medal = MEDAL[entry["rank"]]
     sign = "+" if entry["pnl"] >= 0 else ""
-    return f"{medal} {entry['username']} — {sign}${entry['pnl']:,.0f} ({sign}{entry['pct']:.2f}%) | {entry['challenge']}"
+    return f"{medal} {entry['username']} {sign}${entry['pnl']:,.0f} ({sign}{entry['pct']:.2f}%) | {entry['challenge']}"
 
 
 def format_tweet(top3):
