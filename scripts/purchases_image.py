@@ -17,11 +17,12 @@ CHALLENGE_ORDER = ["Starter", "Explorer", "Bronze", "Silver", "Gold"]
 
 TOTAL_CY  = 480   # gradient total header
 COUNT_CY  = 1186  # between card name (bottom ~1104) and divider (1268)
-DOLLAR_CY = 1420  # below divider
-POINTS_CY = 1565  # near card bottom
+DOLLAR_CY = 1370  # below divider (moved up)
+POINTS_CY = 1515  # near card bottom
 
-WHITE = (255, 255, 255)
-GREEN_PILL = (34, 197, 94, 255)
+WHITE      = (255, 255, 255)
+GREEN_TEXT = (74, 222, 128)
+PILL_BG    = (12, 30, 18, 230)   # dark green-tinted background
 
 
 def _font(size, bold=True):
@@ -38,18 +39,22 @@ def _draw_pill(img, text, cx, cy, font):
     tmp = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
     bb  = tmp.textbbox((0, 0), text, font=font)
     tw, th = bb[2] - bb[0], bb[3] - bb[1]
-    pad_x, pad_y = 30, 15
+    pad_x, pad_y = 36, 18
 
     rx0, ry0 = cx - tw // 2 - pad_x, cy - th // 2 - pad_y
     rx1, ry1 = cx + tw // 2 + pad_x, cy + th // 2 + pad_y
+    radius = (ry1 - ry0) // 2
 
     overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
-    ImageDraw.Draw(overlay).rounded_rectangle([rx0, ry0, rx1, ry1], radius=22, fill=GREEN_PILL)
+    ovl     = ImageDraw.Draw(overlay)
+    ovl.rounded_rectangle([rx0, ry0, rx1, ry1], radius=radius, fill=PILL_BG)
+    # thin green border
+    ovl.rounded_rectangle([rx0, ry0, rx1, ry1], radius=radius, outline=GREEN_TEXT + (200,), width=3)
     img.alpha_composite(overlay)
 
     ImageDraw.Draw(img).text(
         (cx - tw // 2 - bb[0], cy - th // 2 - bb[1]),
-        text, font=font, fill=WHITE,
+        text, font=font, fill=GREEN_TEXT,
     )
 
 
@@ -69,7 +74,7 @@ def generate(challenge_data, total_usdc, out_path=None):
 
     count_font  = _font(130)
     dollar_font = _font(100)
-    pts_font    = _font(68)
+    pts_font    = _font(58)
 
     for cx, name in zip(CARD_CXS, CHALLENGE_ORDER):
         data    = challenge_data.get(name, {"count": 0, "revenue": 0.0})
@@ -88,7 +93,7 @@ def generate(challenge_data, total_usdc, out_path=None):
 
             # Points pill
             pts = int(revenue * 10)
-            _draw_pill(img, f"+{pts:,} PTS", cx, POINTS_CY, pts_font)
+            _draw_pill(img, f"+{pts:,} pts", cx, POINTS_CY, pts_font)
             draw = ImageDraw.Draw(img)
 
     out = Image.new("RGB", img.size, (0, 0, 0))

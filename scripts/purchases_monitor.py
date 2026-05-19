@@ -132,9 +132,12 @@ def check_purchases(session):
         return
 
     hours_display = round(hours_since)
+    total_pts = int(total_usdc * 10)
     tweet = (
-        f"${total_usdc:,.0f} in Challenge purchases in the last {hours_display}h\n\n"
-        f"Stay liquid 💧 $PROPR @ProprXYZ"
+        f"${total_usdc:,.0f} in @ProprXYZ Challenge purchases in the last {hours_display}h! 💸\n\n"
+        f"💰 ~+{total_pts:,} $PROPR airdrop points earned \n\n"
+        f"Earn airdrop points through purchases, trading activity & more! Estimate your airdrop allocation below 👇\n"
+        f"liquidtradershub.com/propr-airdrop"
     )
 
     image_path = generate_image(grouped, total_usdc)
