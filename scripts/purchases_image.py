@@ -18,7 +18,7 @@ CHALLENGE_ORDER = ["Starter", "Explorer", "Bronze", "Silver", "Gold"]
 TOTAL_CY  = 480   # gradient total header
 COUNT_CY  = 1186  # between card name (bottom ~1104) and divider (1268)
 DOLLAR_CY = 1370  # below divider (moved up)
-POINTS_CY = 1515  # near card bottom
+POINTS_CY = 1490  # near card bottom
 
 WHITE      = (255, 255, 255)
 GREEN_TEXT = (74, 222, 128)

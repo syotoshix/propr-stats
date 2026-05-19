@@ -2,7 +2,7 @@ import json
 import os
 import sys
 import requests
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from requests_oauthlib import OAuth1Session
 
@@ -14,12 +14,16 @@ STATE_FILE     = Path(__file__).parent.parent / "state" / "purchases.json"
 TWITTER_BASE   = "https://api.x.com/2"
 TWITTER_UPLOAD = "https://api.x.com/2/media/upload"
 
-SLUG_TO_NAME = {
-    "starter-s": "Starter",  "starter-t": "Starter",
-    "explorer-s": "Explorer", "explorer-t": "Explorer",
-    "bronze-s": "Bronze",     "bronze-t": "Bronze",
-    "silver-s": "Silver",     "silver-t": "Silver",
-    "gold-s": "Gold",         "gold-t": "Gold",
+PRODUCT_TO_NAME = {
+    "urn:prp-product:c8G6xJFioauB": "Starter",   # starter-t
+    "urn:prp-product:VHri3yE798BT": "Starter",    # starter-s
+    "urn:prp-product:iPfhDbCzox6V": "Explorer",   # explorer-t
+    "urn:prp-product:mE1sSAJUHVCS": "Explorer",   # explorer-s
+    "urn:prp-product:UBpMkZ49RwkQ": "Bronze",     # bronze-t
+    "urn:prp-product:VhgJq9jWaCdw": "Bronze",     # bronze-s
+    "urn:prp-product:TFeMnT5pSAUi": "Silver",     # silver-s
+    "urn:prp-product:CN8PbKNJAgEn": "Gold",       # gold-s
+    "urn:prp-product:7aoFGBNm3PQw": "Gold",       # gold-t
 }
 
 
@@ -32,10 +36,32 @@ def get_session():
     )
 
 
-def fetch(path):
-    resp = requests.get(f"{BASE_URL}{path}", timeout=10)
+def fetch_events_since(since: datetime):
+    resp = requests.get(
+        f"{BASE_URL}/api/propr/v1/stats/activity",
+        params={"limit": 500, "types": "purchase"},
+        timeout=10,
+    )
     resp.raise_for_status()
-    return resp.json()
+    events = resp.json()["events"]
+    return [
+        e for e in events
+        if datetime.fromisoformat(e["occurredAt"].replace("Z", "+00:00")) > since
+    ]
+
+
+def group_events(events):
+    grouped = {}
+    for e in events:
+        name = PRODUCT_TO_NAME.get(e["productId"])
+        if not name:
+            print(f"Unknown productId: {e['productId']} (total={e['total']})")
+            continue
+        if name not in grouped:
+            grouped[name] = {"count": 0, "revenue": 0.0}
+        grouped[name]["count"]   += 1
+        grouped[name]["revenue"] += float(e["total"])
+    return grouped
 
 
 def load_state():
@@ -44,47 +70,8 @@ def load_state():
     return json.loads(STATE_FILE.read_text())
 
 
-def save_state(totals):
-    STATE_FILE.write_text(json.dumps({
-        "last_run": datetime.now(timezone.utc).isoformat(),
-        "totals": totals,
-    }, indent=2))
-
-
-def get_current_totals():
-    data = fetch("/api/propr/v1/stats/challenges/purchases/history?days=7")
-    totals = {}
-    for ch in data["byChallenge"]:
-        slug = ch["slug"]
-        totals[slug] = {
-            "count":   sum(d["purchases"] for d in ch["history"]),
-            "revenue": sum(d["revenue"]   for d in ch["history"]),
-        }
-    return totals
-
-
-def compute_delta(current, previous):
-    delta = {}
-    for slug, cur in current.items():
-        prev = previous.get(slug, {"count": 0, "revenue": 0.0})
-        dc = cur["count"]   - prev["count"]
-        dr = cur["revenue"] - prev["revenue"]
-        if dc > 0 or dr > 0:
-            delta[slug] = {"count": max(0, dc), "revenue": max(0.0, dr)}
-    return delta
-
-
-def group_by_name(delta):
-    grouped = {}
-    for slug, data in delta.items():
-        name = SLUG_TO_NAME.get(slug)
-        if not name:
-            continue
-        if name not in grouped:
-            grouped[name] = {"count": 0, "revenue": 0.0}
-        grouped[name]["count"]   += data["count"]
-        grouped[name]["revenue"] += data["revenue"]
-    return grouped
+def save_state(run_time: datetime):
+    STATE_FILE.write_text(json.dumps({"last_run": run_time.isoformat()}, indent=2))
 
 
 def upload_media(session, image_path):
@@ -105,30 +92,29 @@ def post_tweet(session, text, image_path):
 
 
 def check_purchases(session):
-    current = get_current_totals()
-    state   = load_state()
+    now   = datetime.now(timezone.utc)
+    state = load_state()
 
     if state is None:
-        print("First run — saving initial state, no tweet")
-        save_state(current)
-        return
+        since = now - timedelta(hours=12)
+        print("First run — looking back 12h")
+    else:
+        since = datetime.fromisoformat(state["last_run"])
 
-    last_run    = datetime.fromisoformat(state["last_run"])
-    hours_since = (datetime.now(timezone.utc) - last_run).total_seconds() / 3600
-
-    delta   = compute_delta(current, state["totals"])
-    grouped = group_by_name(delta)
+    hours_since = (now - since).total_seconds() / 3600
+    events  = fetch_events_since(since)
+    grouped = group_events(events)
 
     total_usdc  = sum(d["revenue"] for d in grouped.values())
     total_count = sum(d["count"]   for d in grouped.values())
 
-    print(f"Delta since last run ({hours_since:.1f}h): ${total_usdc:,.2f} USDC across {total_count} purchases")
+    print(f"Since {since.isoformat()} ({hours_since:.1f}h): ${total_usdc:,.2f} USDC across {total_count} purchases")
     for name, d in grouped.items():
         print(f"  {name}: {d['count']}x ${d['revenue']:,.2f}")
 
     if total_usdc <= 0:
         print("No new purchases — skipping tweet")
-        save_state(current)
+        save_state(now)
         return
 
     hours_display = round(hours_since)
@@ -144,7 +130,7 @@ def check_purchases(session):
     post_tweet(session, tweet, image_path)
     print(f"Posted: {tweet}")
 
-    save_state(current)
+    save_state(now)
 
 
 def main():
