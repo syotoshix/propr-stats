@@ -13,6 +13,7 @@ OUTPUT   = "purchases/challenge-purchases-generated.png"
 
 # 3200x1800 layout
 CARD_CXS        = [447, 1023, 1600, 2151, 2751]
+CARD_MAX_W      = 400   # max text width inside a card
 CHALLENGE_ORDER = ["Starter", "Explorer", "Bronze", "Silver", "Gold"]
 
 TOTAL_CY  = 480   # gradient total header
@@ -28,6 +29,17 @@ PILL_BG    = (12, 30, 18, 230)   # dark green-tinted background
 def _font(size, bold=True):
     name = "Inter-Bold.ttf" if bold else "Inter-Regular.ttf"
     return ImageFont.truetype(str(FONTS_DIR / name), size)
+
+
+def _fit_font(draw, text, max_width, start_size, min_size=28):
+    size = start_size
+    while size > min_size:
+        f = _font(size)
+        bb = draw.textbbox((0, 0), text, font=f)
+        if bb[2] - bb[0] <= max_width:
+            return f
+        size = int(size * 0.88)
+    return _font(min_size)
 
 
 def _center_text(draw, text, font, cx, cy, fill):
@@ -72,28 +84,29 @@ def generate(challenge_data, total_usdc, out_path=None):
     _draw_gradient_text(img, total_text, total_font, 1600, TOTAL_CY)
     draw = ImageDraw.Draw(img)
 
-    count_font  = _font(130)
-    dollar_font = _font(100)
-    pts_font    = _font(58)
-
     for cx, name in zip(CARD_CXS, CHALLENGE_ORDER):
         data    = challenge_data.get(name, {"count": 0, "revenue": 0.0})
         count   = data["count"]
         revenue = data["revenue"]
 
-        _center_text(draw, f"{count}x", count_font, cx, COUNT_CY, WHITE)
+        count_text = f"{count}x"
+        count_font = _font(90)
+        _center_text(draw, count_text, count_font, cx, COUNT_CY, WHITE)
 
         if count > 0:
-            # Dollar amount (show cents only if non-integer)
+            # Dollar amount — auto-fit to card width
             if revenue == int(revenue):
                 dollar_text = f"${int(revenue):,}"
             else:
                 dollar_text = f"${revenue:,.2f}"
+            dollar_font = _fit_font(draw, dollar_text, CARD_MAX_W, 100)
             _center_text(draw, dollar_text, dollar_font, cx, DOLLAR_CY, WHITE)
 
-            # Points pill
+            # Points pill — auto-fit to card width (pill = text + 2*pad_x)
             pts = int(revenue * 10)
-            _draw_pill(img, f"+{pts:,} pts", cx, POINTS_CY, pts_font)
+            pts_text = f"+{pts:,} pts"
+            pts_font = _fit_font(draw, pts_text, CARD_MAX_W - 72, 58)
+            _draw_pill(img, pts_text, cx, POINTS_CY, pts_font)
             draw = ImageDraw.Draw(img)
 
     out = Image.new("RGB", img.size, (0, 0, 0))

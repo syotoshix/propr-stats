@@ -122,8 +122,9 @@ def check_purchases(session):
     tweet = (
         f"${total_usdc:,.0f} in @ProprXYZ Challenge purchases in the last {hours_display}h! 💸\n\n"
         f"💰 ~+{total_pts:,} $PROPR airdrop points earned \n\n"
-        f"Earn airdrop points through purchases, trading activity & more! Estimate your airdrop allocation below 👇\n"
-        f"liquidtradershub.com/propr-airdrop"
+        f"Earn airdrop points through purchases, trading activity & more! \n\n"
+        f"Estimate your allocation 👇\n"
+        f"http://liquidtradershub.com/propr-airdrop"
     )
 
     image_path = generate_image(grouped, total_usdc)
