@@ -105,7 +105,7 @@ def main():
     dt = datetime.strptime(yesterday, "%Y-%m-%d")
     date_str = f"{dt.strftime('%b')} {dt.day}"
 
-    lines = [f"Daily @ProprXYZ trader stats - $PROPR {date_str}", ""]
+    lines = [f"Daily @ProprXYZ trader stats - {date_str}", ""]
 
     if total_purchases > 0:
         lines.append(f"🛒 {total_purchases} challenges purchased")
@@ -118,7 +118,7 @@ def main():
     if passes > 0:
         lines.append(f"✅ {passes} traders passed their challenge")
 
-    lines += ["", "Start your $5K Free Trial challenge & get funded 👉 app.propr.xyz/r/SYOTOSHI"]
+    lines += ["", "Track live trader stats, snoop on public accounts & estimate your $PROPR airdrop 👉 liquidtradershub.com"]
 
     tweet = "\n".join(lines)
     print(f"Posting tweet:\n{tweet}\n")
