@@ -24,3 +24,8 @@ urn:prp-payout:LJSqVrtNTctB	urn:prp-user:iPzsu82r7cMW	Dobromir Nikov	Karavanata	
 urn:prp-payout:cSKuHwMUvCEJ	urn:prp-user:vqMW5s9kRSXS	Tobias HL	c_srviqOnX	0x591cD7E2Aa98C716C832Eed387Af83b790aAD840	$1396.408
 urn:prp-payout:ZKimuzdFMg7n	urn:prp-user:MHr9Q2BJeSMj	Thierry david	Tarta	0x1fab0ee4C974EfFae22c0e0040f341639451e1f1	$315.408
 urn:prp-payout:h8Hgx9Uvh78X	urn:prp-user:WbvTMZaEPYu7	Bastien Decoene	MoralFirefly#7641	0xA64a287F973700388C631378067Ab8F01618514d	$575.184
+urn:prp-payout:fVLnMA6tUQkD	urn:prp-user:3UQ6QorxaFh3	Diogo Ribeiro	0xKushy	0xa14C5F8FDfb3B5f5501F416F1EBDAB97dD526CBF	$195.544
+urn:prp-payout:3DBmiJKt6JuJ	urn:prp-user:vqMW5s9kRSXS	Tobias HL	c_srviqOnX	0x591cD7E2Aa98C716C832Eed387Af83b790aAD840	$836.488
+urn:prp-payout:kFokHGLhdXBH	urn:prp-user:QGSY1gWcsUVM	BWater	Neo	0xAc744aDE5C5417304e07Fb3FA51173d353108D3a	$110.84
+urn:prp-payout:r4QbyesmHo6k	urn:prp-user:mjsYLFoycBcG	Ivan Grochev	gr9999	0x8844126cA5dEFEE105Ae50e5089933768cCf9999	$49.048
+urn:prp-payout:RUGFjpauc25w	urn:prp-user:fWHFCwK9qBYB	Work2flow 2017	Paniek#1	0xd442A4cae9129a6845fC6e7C304C9da656F91a03	$46.392
