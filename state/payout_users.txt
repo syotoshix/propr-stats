@@ -30,3 +30,6 @@ urn:prp-payout:kFokHGLhdXBH	urn:prp-user:QGSY1gWcsUVM	BWater	Neo	0xAc744aDE5C541
 urn:prp-payout:r4QbyesmHo6k	urn:prp-user:mjsYLFoycBcG	Ivan Grochev	gr9999	0x8844126cA5dEFEE105Ae50e5089933768cCf9999	$49.048
 urn:prp-payout:RUGFjpauc25w	urn:prp-user:fWHFCwK9qBYB	Work2flow 2017	Paniek#1	0xd442A4cae9129a6845fC6e7C304C9da656F91a03	$46.392
 urn:prp-payout:PLk5oVUGqsCS	urn:prp-user:4HoL3dPhXVp4	Le Royaliste	LeRoyaliste9#1392	0x3C6FAa30489F7eD7774cC52376a08315DA01cB58	$84.008
+urn:prp-payout:HzS43MEzt6Zv	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$87.384
+urn:prp-payout:5aZ9r3kyhQcZ	urn:prp-user:WbvTMZaEPYu7	Bastien Decoene	MoralFirefly#7641	0xA64a287F973700388C631378067Ab8F01618514d	$1213.496
+urn:prp-payout:aD44qvkLMUWN	urn:prp-user:qPpXh2ojTnah	Cyril Mawutor Agbenyenu	chainparser	0x57260a45C6c2564a27215f2b0a8319E112770791	$144.784
