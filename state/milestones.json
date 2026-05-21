@@ -2,7 +2,9 @@
   "revenue": [
     200000
   ],
-  "traders": [],
+  "traders": [
+    5000
+  ],
   "capital": [
     500000
   ]
