@@ -50,3 +50,5 @@ urn:prp-payout:NLf46BJJ9NKt	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD
 urn:prp-payout:pYZJgL4QSKDH	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$177.359981
 urn:prp-payout:YKKRhtc2mcsa	urn:prp-user:S6ETG8sMoscm	David Knezevic	PlimaFlow	0x3f729ae75Ff288b108014927B4fF69D304dCE9A9	$3551.496529
 urn:prp-payout:SA2qFZfd3uJt	urn:prp-user:GHzUHTFEXhnv	Spadesure	Spades	0x3c48Eb23c2E9fcE415F6cae94e15D87f0aC5233d	$117.69802
+urn:prp-payout:5vGg3SZXogNn	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$172.65633
+urn:prp-payout:caKXVbD6GgCF	urn:prp-user:fWHFCwK9qBYB	Work2flow 2017	Paniek#1	0xd442A4cae9129a6845fC6e7C304C9da656F91a03	$118.187894
