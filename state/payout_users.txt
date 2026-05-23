@@ -47,3 +47,6 @@ urn:prp-payout:4kcxvdDDA8Jg	urn:prp-user:GHzUHTFEXhnv	Spadesure	Spades	0x3c48Eb2
 urn:prp-payout:ZPPSgXgKo8b6	urn:prp-user:uLNbMT9KYJA6	Nay Naystea	Slim_Shady	0x682a21BED7a38DBa3cA5A2715A55bB8A116a86a0	$390.448
 urn:prp-payout:YeQGbnssywUG	urn:prp-user:MHBPBPseeD3X	elninjarosa	NANDO	0xC82067b402608Eed7FbfB17FC10E66B6908887d5	$1.4
 urn:prp-payout:NLf46BJJ9NKt	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$161.176
+urn:prp-payout:pYZJgL4QSKDH	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$177.359981
+urn:prp-payout:YKKRhtc2mcsa	urn:prp-user:S6ETG8sMoscm	David Knezevic	PlimaFlow	0x3f729ae75Ff288b108014927B4fF69D304dCE9A9	$3551.496529
+urn:prp-payout:SA2qFZfd3uJt	urn:prp-user:GHzUHTFEXhnv	Spadesure	Spades	0x3c48Eb23c2E9fcE415F6cae94e15D87f0aC5233d	$117.69802
