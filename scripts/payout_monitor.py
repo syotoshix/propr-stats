@@ -168,7 +168,7 @@ def combined_stats(new_processed, old_payouts):
 
 def check_payouts(session):
     raw = fetch("/api/transparency/api-payouts")
-    processed = [p for p in raw if p["status"] == "processed" and p.get("txHash")]
+    processed = [p for p in raw if p["status"] == "processed" and p.get("txHash") and p.get("userAmount") is not None]
 
     if not processed:
         print("No processed payouts found")
@@ -211,7 +211,7 @@ def manual_payouts_cmd(session, payouts_json):
         p["amount"] = float(p["amount"])
 
     raw = fetch("/api/transparency/api-payouts")
-    processed = [p for p in raw if p["status"] == "processed" and p.get("txHash")]
+    processed = [p for p in raw if p["status"] == "processed" and p.get("txHash") and p.get("userAmount") is not None]
     all_api_normalized = [normalize_payout(p) for p in processed]
 
     old_data = fetch("/api/transparency/payouts")
