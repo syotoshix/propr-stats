@@ -52,3 +52,11 @@ urn:prp-payout:YKKRhtc2mcsa	urn:prp-user:S6ETG8sMoscm	David Knezevic	PlimaFlow	0
 urn:prp-payout:SA2qFZfd3uJt	urn:prp-user:GHzUHTFEXhnv	Spadesure	Spades	0x3c48Eb23c2E9fcE415F6cae94e15D87f0aC5233d	$117.69802
 urn:prp-payout:5vGg3SZXogNn	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$172.65633
 urn:prp-payout:caKXVbD6GgCF	urn:prp-user:fWHFCwK9qBYB	Work2flow 2017	Paniek#1	0xd442A4cae9129a6845fC6e7C304C9da656F91a03	$118.187894
+urn:prp-payout:8bUBnnJGXUfv	urn:prp-user:sqwS8PdHDXXN	Kennii	RealKennii	0xEAA6be64B4C47e3925D0e1ec66d724A928AC4ADF	$51.363665
+urn:prp-payout:2Md7r4ZSkSLT	urn:prp-user:4HoL3dPhXVp4	Le Royaliste	LeRoyaliste9#1392	0x3C6FAa30489F7eD7774cC52376a08315DA01cB58	$64.305866
+urn:prp-payout:uttktaFN5E12	urn:prp-user:4HoL3dPhXVp4	Le Royaliste	LeRoyaliste9#1392	0x3C6FAa30489F7eD7774cC52376a08315DA01cB58	$89.886156
+urn:prp-payout:HkCLMBcCtxqT	urn:prp-user:HEXgizssyemJ	Phu Nguyen Minh	Mihu	0x1da5735648D5c6f8a0C164bd2D18eF13699A8E99	$144.025647
+urn:prp-payout:YC9DMH199XUP	urn:prp-user:aX1NdoS3tRYB	Chip Stewart	GreasyMongoose#9476	0xDD1133E3903fBAb99a53937A795105db6499AB29	$830.599999
+urn:prp-payout:Wvzm5dGGvvjg	urn:prp-user:7b9kfo3XM1RE	Nikola Golubovic	YabberingFelidae#5765	0x7c300DB4a177109c94DE4204AEDc51e4621c6281	$52.679732
+urn:prp-payout:1EsKuKhkKBcw	urn:prp-user:sciQ9A1V3AUW	Денис М	EverydayMackerel#5133	0x64eD5A32a5D915b460Ef533390F030f52d078387	$122.555718
+urn:prp-payout:6TSieEndtqup	urn:prp-user:AzV3YcqzSkMD	Mathieu Bertolo	Mat5KR	0x002bc879eCF65cf7ec66E02456547120e72aa11a	$792.228828
