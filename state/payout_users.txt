@@ -60,3 +60,11 @@ urn:prp-payout:YC9DMH199XUP	urn:prp-user:aX1NdoS3tRYB	Chip Stewart	GreasyMongoos
 urn:prp-payout:Wvzm5dGGvvjg	urn:prp-user:7b9kfo3XM1RE	Nikola Golubovic	YabberingFelidae#5765	0x7c300DB4a177109c94DE4204AEDc51e4621c6281	$52.679732
 urn:prp-payout:1EsKuKhkKBcw	urn:prp-user:sciQ9A1V3AUW	Денис М	EverydayMackerel#5133	0x64eD5A32a5D915b460Ef533390F030f52d078387	$122.555718
 urn:prp-payout:6TSieEndtqup	urn:prp-user:AzV3YcqzSkMD	Mathieu Bertolo	Mat5KR	0x002bc879eCF65cf7ec66E02456547120e72aa11a	$792.228828
+urn:prp-payout:3vR2ofQouhSC	urn:prp-user:qPpXh2ojTnah	Cyril Mawutor Agbenyenu	chainparser	0x57260a45C6c2564a27215f2b0a8319E112770791	$113.882446
+urn:prp-payout:1b2AVf76HYVb	urn:prp-user:aX1NdoS3tRYB	Chip Stewart	GreasyMongoose#9476	0xDD1133E3903fBAb99a53937A795105db6499AB29	$534.940682
+urn:prp-payout:6g5CTcU6rVqx	urn:prp-user:czKJZUXhjtHQ	Teerpahut TT	Long_odyssey	0x44feB4A88790fb067534Ea788873F5E464470288	$47.421761
+urn:prp-payout:uW2a49gzcjA5	urn:prp-user:aX1NdoS3tRYB	Chip Stewart	GreasyMongoose#9476	0xDD1133E3903fBAb99a53937A795105db6499AB29	$1093.552347
+urn:prp-payout:hwnCKYbLfC8e	urn:prp-user:x7dvxJT6ixg2	Laurens	BreakableBonobo#4932	0x12948988351EAf2Cf7c1f73209eE5a3345937457	$188.636994
+urn:prp-payout:SmjEPZ9X2AyZ	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$194.057662
+urn:prp-payout:aD3URUMugtmN	urn:prp-user:czKJZUXhjtHQ	Teerpahut TT	Long_odyssey	0x44feB4A88790fb067534Ea788873F5E464470288	$41.577284
+urn:prp-payout:LE938qYa3NzW	urn:prp-user:4XkUnK6XnT4D	Ivan Escolá	GentleAlpaca007	0x748478C441507F6703e6742b26015D7fD0ffc50f	$436.187061
