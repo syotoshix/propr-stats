@@ -68,3 +68,6 @@ urn:prp-payout:hwnCKYbLfC8e	urn:prp-user:x7dvxJT6ixg2	Laurens	BreakableBonobo#49
 urn:prp-payout:SmjEPZ9X2AyZ	urn:prp-user:UBqUoXc5Bgku	Anthony L-g	AnthoBorg	0xDD2112a40C83A9CF10c5fA090effa0dc673192BD	$194.057662
 urn:prp-payout:aD3URUMugtmN	urn:prp-user:czKJZUXhjtHQ	Teerpahut TT	Long_odyssey	0x44feB4A88790fb067534Ea788873F5E464470288	$41.577284
 urn:prp-payout:LE938qYa3NzW	urn:prp-user:4XkUnK6XnT4D	Ivan Escolá	GentleAlpaca007	0x748478C441507F6703e6742b26015D7fD0ffc50f	$436.187061
+urn:prp-payout:AeCMnb84KZC9	urn:prp-user:qPpXh2ojTnah	Cyril Mawutor Agbenyenu	chainparser	0x57260a45C6c2564a27215f2b0a8319E112770791	$108.921838
+urn:prp-payout:tyQRKkAGkWNc	urn:prp-user:HEXgizssyemJ	Phu Nguyen Minh	Mihu	0x1da5735648D5c6f8a0C164bd2D18eF13699A8E99	$204.909153
+urn:prp-payout:sLRdjvZBRGSF	urn:prp-user:YGMm91rNVw3j	Віталій Білинський	PastDamselfly#4641	0x39b2aC21bea5feE5e6F816731e8245C42c3d7682	$272.63889
