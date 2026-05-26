@@ -102,11 +102,9 @@ def generate(challenge_data, total_usdc, out_path=None):
             dollar_font = _fit_font(draw, dollar_text, CARD_MAX_W, 100)
             _center_text(draw, dollar_text, dollar_font, cx, DOLLAR_CY, WHITE)
 
-            # Points pill — auto-fit to card width (pill = text + 2*pad_x)
-            pts = int(revenue * 10)
-            pts_text = f"+{pts:,} pts"
-            pts_font = _fit_font(draw, pts_text, CARD_MAX_W - 72, 58)
-            _draw_pill(img, pts_text, cx, POINTS_CY, pts_font)
+            # Points pill
+            pts_font = _font(58)
+            _draw_pill(img, "+ Airdrop pts", cx, POINTS_CY, pts_font)
             draw = ImageDraw.Draw(img)
 
     out = Image.new("RGB", img.size, (0, 0, 0))

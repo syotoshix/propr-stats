@@ -118,12 +118,10 @@ def check_purchases(session):
         return
 
     hours_display = round(hours_since)
-    total_pts = int(total_usdc * 10)
     tweet = (
         f"${total_usdc:,.0f} in @ProprXYZ Challenge purchases in the last {hours_display}h! 💸\n\n"
-        f"💰 ~+{total_pts:,} $PROPR airdrop points earned \n\n"
         f"Earn airdrop points through purchases, trading activity & more! \n\n"
-        f"Estimate your allocation 👇\n"
+        f"Estimate your $PROPR allocation 👇\n"
         f"http://liquidtradershub.com/propr-airdrop"
     )
 
