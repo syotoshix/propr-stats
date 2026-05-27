@@ -71,3 +71,4 @@ urn:prp-payout:LE938qYa3NzW	urn:prp-user:4XkUnK6XnT4D	Ivan Escolá	GentleAlpaca0
 urn:prp-payout:AeCMnb84KZC9	urn:prp-user:qPpXh2ojTnah	Cyril Mawutor Agbenyenu	chainparser	0x57260a45C6c2564a27215f2b0a8319E112770791	$108.921838
 urn:prp-payout:tyQRKkAGkWNc	urn:prp-user:HEXgizssyemJ	Phu Nguyen Minh	Mihu	0x1da5735648D5c6f8a0C164bd2D18eF13699A8E99	$204.909153
 urn:prp-payout:sLRdjvZBRGSF	urn:prp-user:YGMm91rNVw3j	Віталій Білинський	PastDamselfly#4641	0x39b2aC21bea5feE5e6F816731e8245C42c3d7682	$272.63889
+urn:prp-payout:SVYaPwaHx5FX	urn:prp-user:haZi4tyRjXkk	Bryan Rivera	i8Snow	0x244b4aE93E4Fe43b799c1D34254977e7110ADC70	$134.176862
