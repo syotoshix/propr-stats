@@ -73,3 +73,4 @@ urn:prp-payout:tyQRKkAGkWNc	urn:prp-user:HEXgizssyemJ	Phu Nguyen Minh	Mihu	0x1da
 urn:prp-payout:sLRdjvZBRGSF	urn:prp-user:YGMm91rNVw3j	Віталій Білинський	PastDamselfly#4641	0x39b2aC21bea5feE5e6F816731e8245C42c3d7682	$272.63889
 urn:prp-payout:SVYaPwaHx5FX	urn:prp-user:haZi4tyRjXkk	Bryan Rivera	i8Snow	0x244b4aE93E4Fe43b799c1D34254977e7110ADC70	$134.176862
 urn:prp-payout:3y9gcyGmkbHE	urn:prp-user:Zy6CqWRFhUKR	Bautista Melo	DutchTapir#5964	0x86271bDa4FA6beBCC574D23d9f3FcB8Aba2314B3	$177.8189
+urn:prp-payout:Xevuvwq2K5BT	urn:prp-user:FU2QDR6MdYis	Jatin Sha	SemanticHawk#8196	0x6459BC0aA2ad43365d100e3087cbA684a9521858	$41.531058
