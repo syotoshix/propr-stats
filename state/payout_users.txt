@@ -76,3 +76,8 @@ urn:prp-payout:3y9gcyGmkbHE	urn:prp-user:Zy6CqWRFhUKR	Bautista Melo	DutchTapir#5
 urn:prp-payout:Xevuvwq2K5BT	urn:prp-user:FU2QDR6MdYis	Jatin Sha	SemanticHawk#8196	0x6459BC0aA2ad43365d100e3087cbA684a9521858	$41.531058
 urn:prp-payout:jvoskc2nuTJ5	urn:prp-user:vBgrFDCVgM5G	Joaquin Freije	Freije	0xb3444E0ae91Ee47a02c0048e2860a37DbC60b0a9	$1261.561078
 urn:prp-payout:gABv5dH2xeGJ	urn:prp-user:2NQVBFyYCqUo	NEVILSON JOSE	ChosenBlackbird#1344	0x95b1B0aA9dD0FB840Fa96E3Bac8874dB78D8A2d6	$148.242504
+urn:prp-payout:4tDNdv3Hbn5k	urn:prp-user:vBgrFDCVgM5G	Joaquin Freije	Freije	0xfa412988Ca8458ec700d59e4bE16EB795D190fdC	$108.332517
+urn:prp-payout:NTMPm3sEJEv1	urn:prp-user:7b9kfo3XM1RE	Nikola Golubovic	YabberingFelidae#5765	0x7c300DB4a177109c94DE4204AEDc51e4621c6281	$1789.707225
+urn:prp-payout:PCr8MgFYMQQG	urn:prp-user:4HoL3dPhXVp4	Le Royaliste	LeRoyaliste9#1392	0x3C6FAa30489F7eD7774cC52376a08315DA01cB58	$96.132693
+urn:prp-payout:4FvMVCoCdxTj	urn:prp-user:b3p5UARRyL65	Yossapat Thaveesittikullarp	JollyParrot#1721	0x90995551fa54Fc72b17cA7D13bb49a03377Aa407	$330.618285
+urn:prp-payout:Z79PqyG4Hw5R	urn:prp-user:2NQVBFyYCqUo	NEVILSON JOSE	ChosenBlackbird#1344	0x95b1B0aA9dD0FB840Fa96E3Bac8874dB78D8A2d6	$99.944384
