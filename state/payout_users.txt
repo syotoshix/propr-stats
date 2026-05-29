@@ -83,3 +83,5 @@ urn:prp-payout:4FvMVCoCdxTj	urn:prp-user:b3p5UARRyL65	Yossapat Thaveesittikullar
 urn:prp-payout:Z79PqyG4Hw5R	urn:prp-user:2NQVBFyYCqUo	NEVILSON JOSE	ChosenBlackbird#1344	0x95b1B0aA9dD0FB840Fa96E3Bac8874dB78D8A2d6	$99.944384
 urn:prp-payout:BMczf3WbuxCu	urn:prp-user:WraSS3m1KWin	Oscar JULITA	Razok	0x2Aa579a9Ecc5A7453377Cea2120424380175f25b	$46.200712
 urn:prp-payout:gvev2wFZAv5h	urn:prp-user:wmXoinEkSy9i	Kid K	GoverningGalliform#9208	0x2F91854EEE88Eced9c0ae197820AEDe8089Fb693	$1058.395395
+urn:prp-payout:jg4QvUNARzYw	urn:prp-user:vBgrFDCVgM5G	Joaquin Freije	Freije	0xfa412988Ca8458ec700d59e4bE16EB795D190fdC	$105.507766
+urn:prp-payout:hziz1nkb98b2	urn:prp-user:czKJZUXhjtHQ	Teerpahut TT	Long_odyssey	0x44feB4A88790fb067534Ea788873F5E464470288	$40.842174
