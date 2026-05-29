@@ -86,3 +86,4 @@ urn:prp-payout:gvev2wFZAv5h	urn:prp-user:wmXoinEkSy9i	Kid K	GoverningGalliform#9
 urn:prp-payout:jg4QvUNARzYw	urn:prp-user:vBgrFDCVgM5G	Joaquin Freije	Freije	0xfa412988Ca8458ec700d59e4bE16EB795D190fdC	$105.507766
 urn:prp-payout:hziz1nkb98b2	urn:prp-user:czKJZUXhjtHQ	Teerpahut TT	Long_odyssey	0x44feB4A88790fb067534Ea788873F5E464470288	$40.842174
 urn:prp-payout:U8WGEb4xDq1c	urn:prp-user:qPpXh2ojTnah	Cyril Mawutor Agbenyenu	chainparser	0x57260a45C6c2564a27215f2b0a8319E112770791	$171.573994
+urn:prp-payout:BgxW93KG8jtk	urn:prp-user:fWHFCwK9qBYB	Work2flow 2017	Paniek#1	0xd442A4cae9129a6845fC6e7C304C9da656F91a03	$109.691986
