@@ -97,3 +97,4 @@ urn:prp-payout:MwYcqW57AUqZ	urn:prp-user:rGMP2CLTAQoe	SUSI NETWORK	ExcessiveAngl
 urn:prp-payout:CyThShhbrkBR	urn:prp-user:gA1y1RZvB3uz	金ツッパ侍侍	CompleteWeasel#9029	0x75a71Db0E02b73400367D32A8F8650f8cA5ed3e1	$753.213634
 urn:prp-payout:tTictJArQQJH	urn:prp-user:gA1y1RZvB3uz	金ツッパ侍侍	CompleteWeasel#9029	0x75a71Db0E02b73400367D32A8F8650f8cA5ed3e1	$803.600408
 urn:prp-payout:Y7ikt6XL4bZy	urn:prp-user:4HoL3dPhXVp4	Le Royaliste	LeRoyaliste9#1392	0x3C6FAa30489F7eD7774cC52376a08315DA01cB58	$163.83112
+urn:prp-payout:SeVRxdti8wHK	urn:prp-user:gA1y1RZvB3uz	金ツッパ侍侍	CompleteWeasel#9029	0x75a71Db0E02b73400367D32A8F8650f8cA5ed3e1	$732.362721
