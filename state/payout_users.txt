@@ -99,3 +99,5 @@ urn:prp-payout:tTictJArQQJH	urn:prp-user:gA1y1RZvB3uz	金ツッパ侍侍	Complet
 urn:prp-payout:Y7ikt6XL4bZy	urn:prp-user:4HoL3dPhXVp4	Le Royaliste	LeRoyaliste9#1392	0x3C6FAa30489F7eD7774cC52376a08315DA01cB58	$163.83112
 urn:prp-payout:SeVRxdti8wHK	urn:prp-user:gA1y1RZvB3uz	金ツッパ侍侍	CompleteWeasel#9029	0x75a71Db0E02b73400367D32A8F8650f8cA5ed3e1	$732.362721
 urn:prp-payout:gpGFCnbJMrY2	urn:prp-user:czKJZUXhjtHQ	Teerpahut TT	Long_odyssey	0x44feB4A88790fb067534Ea788873F5E464470288	$41.055218
+urn:prp-payout:E4gsKCPJymAh	urn:prp-user:vBgrFDCVgM5G	Joaquin Freije	Freije	0xfa412988Ca8458ec700d59e4bE16EB795D190fdC	$108.459614
+urn:prp-payout:bY8jyJETTh6G	urn:prp-user:7b9kfo3XM1RE	Nikola Golubovic	YabberingFelidae#5765	0x7c300DB4a177109c94DE4204AEDc51e4621c6281	$313.446691
