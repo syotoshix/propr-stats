@@ -112,3 +112,11 @@ urn:prp-payout:4a4AgNpBci4h	urn:prp-user:4HoL3dPhXVp4	Le Royaliste	LeRoyaliste9#
 urn:prp-payout:kyCjtyeHtkdn	urn:prp-user:4HoL3dPhXVp4	Le Royaliste	LeRoyaliste9#1392	0x3C6FAa30489F7eD7774cC52376a08315DA01cB58	$133.236991
 urn:prp-payout:s2sf4bs3oNgQ	urn:prp-user:xNMUYnEa7ZYU	ARTURO CORRAL	artjav22	0xBe5bf4da2886CD8c60de03708Bd410D10684E774	$61.586314
 urn:prp-payout:Ts1H3iLHWzEm	urn:prp-user:vBgrFDCVgM5G	Joaquin Freije	Freije	0xfa412988Ca8458ec700d59e4bE16EB795D190fdC	$575.641272
+urn:prp-payout:hhQBJiLR2F1M	urn:prp-user:8K66G27veupL	Stan	FavouriteArmadillo#8626	0xbacDb05C55385c1f4122f466F37d1cfC16EE3198	$195.909762
+urn:prp-payout:BdS9TX5doJn1	urn:prp-user:spXq7aVNpds6	Tristan CO	JhonMakanalawayyy	0x664F60DFD3d06dDcf533E2D18D3C527521359295	$41.776057
+urn:prp-payout:A6Foqnm73QWA	urn:prp-user:vBgrFDCVgM5G	Joaquin Freije	Freije	0xfa412988Ca8458ec700d59e4bE16EB795D190fdC	$127.136417
+urn:prp-payout:fsb779v3mM8e	urn:prp-user:ChuEkNGHDQQQ	Noax	loffyhl	0x7045f89Ab4F298284902dC3A870d63EB39d7aD9A	$460.652154
+urn:prp-payout:P3LQzhvefRP3	urn:prp-user:sciQ9A1V3AUW	Денис М	EverydayMackerel#5133	0x64eD5A32a5D915b460Ef533390F030f52d078387	$77.785495
+urn:prp-payout:tWDLZrcrkxcB	urn:prp-user:8K66G27veupL	Stan	FavouriteArmadillo#8626	0xbacDb05C55385c1f4122f466F37d1cfC16EE3198	$91.425853
+urn:prp-payout:mboxxbszDRJD	urn:prp-user:o9bwsYGDJhk7	Cosmin Andrei	Cosmyn	0x59bA02416d7e8136a112D36F97ED673ac4178572	$92.160729
+urn:prp-payout:K5VvtcWaSQpL	urn:prp-user:oM3fLtGKGUbE	Warrenbudy	Urihype#3580	0x7271605d946c15113700374b7B9b66F76cAD8C57	$278.659318
