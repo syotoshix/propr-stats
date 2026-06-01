@@ -121,3 +121,5 @@ urn:prp-payout:tWDLZrcrkxcB	urn:prp-user:8K66G27veupL	Stan	FavouriteArmadillo#86
 urn:prp-payout:mboxxbszDRJD	urn:prp-user:o9bwsYGDJhk7	Cosmin Andrei	Cosmyn	0x59bA02416d7e8136a112D36F97ED673ac4178572	$92.160729
 urn:prp-payout:K5VvtcWaSQpL	urn:prp-user:oM3fLtGKGUbE	Warrenbudy	Urihype#3580	0x7271605d946c15113700374b7B9b66F76cAD8C57	$278.659318
 urn:prp-payout:411SEsufVvDE	urn:prp-user:UBuzY9FKYrxx	Chi Pham	Chi2140	0xC2e4cc2D2AD0277f6315e9280CaE05a248DFe481	$379.531684
+urn:prp-payout:a2MtbumTw3Mf	urn:prp-user:vBgrFDCVgM5G	Joaquin Freije	Freije	0xfa412988Ca8458ec700d59e4bE16EB795D190fdC	$97.955034
+urn:prp-payout:vS19v57YT4GS	urn:prp-user:o9bwsYGDJhk7	Cosmin Andrei	Cosmyn	0x59bA02416d7e8136a112D36F97ED673ac4178572	$56.044599
