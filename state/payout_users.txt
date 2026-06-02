@@ -129,3 +129,7 @@ urn:prp-payout:hQAyUbQjwt6A	urn:prp-user:b3p5UARRyL65	Yossapat Thaveesittikullar
 urn:prp-payout:6jKkt73tFuAS	urn:prp-user:UiG82g5j6JNu	ATK	PregnantMonkey#2538	0x2dC856d68F763f414e801755Ceaa58523F740580	$110.356228
 urn:prp-payout:qFGoTJYBP5LP	urn:prp-user:FU2QDR6MdYis	Jatin Sha	SemanticHawk#8196	0x6459BC0aA2ad43365d100e3087cbA684a9521858	$208.130374
 urn:prp-payout:j95y5q9RMAK7	urn:prp-user:spXq7aVNpds6	Tristan CO	JhonMakanalawayyy	0x664F60DFD3d06dDcf533E2D18D3C527521359295	$40.76271
+urn:prp-payout:29QssxyAdmQQ					$434.138764
+urn:prp-payout:9eU3TTvALAqV					$42.148391
+urn:prp-payout:ScprhNVrBxLU					$119.018805
+urn:prp-payout:vPVxfXYShgfN					$80.704095
