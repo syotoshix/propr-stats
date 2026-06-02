@@ -123,3 +123,9 @@ urn:prp-payout:K5VvtcWaSQpL	urn:prp-user:oM3fLtGKGUbE	Warrenbudy	Urihype#3580	0x
 urn:prp-payout:411SEsufVvDE	urn:prp-user:UBuzY9FKYrxx	Chi Pham	Chi2140	0xC2e4cc2D2AD0277f6315e9280CaE05a248DFe481	$379.531684
 urn:prp-payout:a2MtbumTw3Mf	urn:prp-user:vBgrFDCVgM5G	Joaquin Freije	Freije	0xfa412988Ca8458ec700d59e4bE16EB795D190fdC	$97.955034
 urn:prp-payout:vS19v57YT4GS	urn:prp-user:o9bwsYGDJhk7	Cosmin Andrei	Cosmyn	0x59bA02416d7e8136a112D36F97ED673ac4178572	$56.044599
+urn:prp-payout:8tCZfYTQ5Ko2	urn:prp-user:vBgrFDCVgM5G	Joaquin Freije	Freije	0xfa412988Ca8458ec700d59e4bE16EB795D190fdC	$397.473663
+urn:prp-payout:1ZWagtAe3ZAS	urn:prp-user:UBuzY9FKYrxx	Chi Pham	Chi2140	0xC2e4cc2D2AD0277f6315e9280CaE05a248DFe481	$151.370386
+urn:prp-payout:hQAyUbQjwt6A	urn:prp-user:b3p5UARRyL65	Yossapat Thaveesittikullarp	JollyParrot#1721	0x90995551fa54Fc72b17cA7D13bb49a03377Aa407	$100.11406
+urn:prp-payout:6jKkt73tFuAS	urn:prp-user:UiG82g5j6JNu	ATK	PregnantMonkey#2538	0x2dC856d68F763f414e801755Ceaa58523F740580	$110.356228
+urn:prp-payout:qFGoTJYBP5LP	urn:prp-user:FU2QDR6MdYis	Jatin Sha	SemanticHawk#8196	0x6459BC0aA2ad43365d100e3087cbA684a9521858	$208.130374
+urn:prp-payout:j95y5q9RMAK7	urn:prp-user:spXq7aVNpds6	Tristan CO	JhonMakanalawayyy	0x664F60DFD3d06dDcf533E2D18D3C527521359295	$40.76271
