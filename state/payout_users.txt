@@ -139,3 +139,12 @@ urn:prp-payout:8Lmqt6jUammM					$195.188318
 urn:prp-payout:kwMNg7PLLusP					$86.920118
 urn:prp-payout:QapY2PyGVRXT					$310.870998
 urn:prp-payout:LAkZUNF73Dxu					$90.213001
+urn:prp-payout:gfNVKb8kXj3h					$376.541027
+urn:prp-payout:8kdpYF5Vt2Wf					$99.172283
+urn:prp-payout:njMWYqMfmbgo					$143.569434
+urn:prp-payout:uroomoi5zhb8					$1714.69311
+urn:prp-payout:UQfNjMLAsZdt					$166.292162
+urn:prp-payout:syX9Jsb1Ymzj					$55.05675
+urn:prp-payout:tg4T6dQyaPhB		Joaquin Freije	Freije		$328.741958
+urn:prp-payout:y79uxpPydyMb					$46.166631
+urn:prp-payout:Wg8U4y3LqS2K					$69.303798
