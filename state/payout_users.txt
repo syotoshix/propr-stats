@@ -183,3 +183,8 @@ urn:prp-payout:HoQQPjypoKoi		Joaquin Freije	Freije		$261.534855
 urn:prp-payout:zmsUUfEkDfxp					$182.877454
 urn:prp-payout:YtxJZSLrjvdm		Bohdan Hoy	0xCryptoGlorian		$94.642011
 urn:prp-payout:t9DN2wQdi2eE					$89.259323
+urn:prp-payout:DLwTXUELVNqt					$236.216291
+urn:prp-payout:nyccwV7h3GUa		Nick Carlin	NIck		$191.219608
+urn:prp-payout:RCsNMeUVmKR5					$136.735414
+urn:prp-payout:Fz9aESgKHy1f					$68.220666
+urn:prp-payout:ZCuVRz9oRz5K					$130.78231
