@@ -188,3 +188,6 @@ urn:prp-payout:nyccwV7h3GUa		Nick Carlin	NIck		$191.219608
 urn:prp-payout:RCsNMeUVmKR5					$136.735414
 urn:prp-payout:Fz9aESgKHy1f					$68.220666
 urn:prp-payout:ZCuVRz9oRz5K					$130.78231
+urn:prp-payout:a8PqfCBr5HsB					$109.518842
+urn:prp-payout:XUc12smjCqD6					$64.978582
+urn:prp-payout:y9xxp62Mdx9q					$82.608709
