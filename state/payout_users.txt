@@ -173,3 +173,7 @@ urn:prp-payout:jhc4cbWPoV77					$233.841533
 urn:prp-payout:mp2GRduhDSaU					$49.233505
 urn:prp-payout:iLSkdzAMVwMn					$158.612131
 urn:prp-payout:xdoYqsHmnhhj					$205.946382
+urn:prp-payout:DEcPpEzvjFcx		CARLOS GONZÁLEZ	Capitalstudios		$381.817987
+urn:prp-payout:EaPKvqHvr7Ba					$157.100526
+urn:prp-payout:Bn11Z6Vhovnf					$65.296187
+urn:prp-payout:5WHAwk6jVFB7					$396.189311
