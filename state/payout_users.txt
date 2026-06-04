@@ -177,3 +177,9 @@ urn:prp-payout:DEcPpEzvjFcx		CARLOS GONZÁLEZ	Capitalstudios		$381.817987
 urn:prp-payout:EaPKvqHvr7Ba					$157.100526
 urn:prp-payout:Bn11Z6Vhovnf					$65.296187
 urn:prp-payout:5WHAwk6jVFB7					$396.189311
+urn:prp-payout:iZWPnbjHhh17					$123.434002
+urn:prp-payout:Q1G8ZUnr7WfH					$110.916202
+urn:prp-payout:HoQQPjypoKoi		Joaquin Freije	Freije		$261.534855
+urn:prp-payout:zmsUUfEkDfxp					$182.877454
+urn:prp-payout:YtxJZSLrjvdm		Bohdan Hoy	0xCryptoGlorian		$94.642011
+urn:prp-payout:t9DN2wQdi2eE					$89.259323
