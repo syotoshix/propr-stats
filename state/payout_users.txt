@@ -157,3 +157,14 @@ urn:prp-payout:KWCXyYtEWn38					$439.832525
 urn:prp-payout:sPwQTPibsCR8					$420.588941
 urn:prp-payout:zF7j5NitEweX					$40.04797
 urn:prp-payout:W3uzh77EV6Ch					$85.279561
+urn:prp-payout:am3vsKjJiPhE		Bohdan Hoy	0xCryptoGlorian		$224.632922
+urn:prp-payout:Cn3xcaFq3nXP					$42.464306
+urn:prp-payout:Ao2JVTWzF3t3					$177.311114
+urn:prp-payout:75iiC4w9k5dF					$368.284862
+urn:prp-payout:HzcvDisSzUt2					$46.023622
+urn:prp-payout:SJQSiJdJJyAF					$41.160908
+urn:prp-payout:uExDYTFVvWEo		Joaquin Freije	Freije		$245.629219
+urn:prp-payout:Zxnx1g1YyXh6		Joaquin Freije	Freije		$338.729621
+urn:prp-payout:YNaDKngghepR					$216.357052
+urn:prp-payout:TXAAxjtvv98m		Bohdan Hoy	0xCryptoGlorian		$48.986426
+urn:prp-payout:y5LJbNk4sLdm					$321.944514
