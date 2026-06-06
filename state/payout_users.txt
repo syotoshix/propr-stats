@@ -221,3 +221,5 @@ urn:prp-payout:KjeH7kpcMyHA					$200.765338
 urn:prp-payout:YJWmqauUzjTm		Joaquin Freije	Freije		$518.229322
 urn:prp-payout:Tpj3xcokaLJ5					$349.529816
 urn:prp-payout:z8eKRLrzh97i					$520.764858
+urn:prp-payout:DzXntRrjh4TR					$392.802806
+urn:prp-payout:UiXvY8rtXKyD					$394.19111
