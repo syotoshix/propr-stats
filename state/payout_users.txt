@@ -233,3 +233,4 @@ urn:prp-payout:FapLDyHg4mmo					$212.894534
 urn:prp-payout:kZtxq4cKJkfG					$46.866516
 urn:prp-payout:PKKMc7NpmEAX					$54.035031
 urn:prp-payout:wNmEvcHX7152		CARLOS GONZÁLEZ	Capitalstudios		$587.559308
+urn:prp-payout:zY7SgvFYHAmy		Bohdan Hoy	0xCryptoGlorian		$664.169454
