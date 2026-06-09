@@ -273,3 +273,4 @@ urn:prp-payout:J3U6WxHeg46c		Alex	Alex		$89.866482
 urn:prp-payout:QJieJhGrJ9U2					$211.000849
 urn:prp-payout:1KDBwT6fxDoV					$57.001053
 urn:prp-payout:RfYJtucm1oKR					$46.754568
+urn:prp-payout:3y5x6Ri6oLEY		Joaquin Freije	Freije		$721.619407
