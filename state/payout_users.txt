@@ -252,3 +252,11 @@ urn:prp-payout:8cyAunsU8u6R					$128.917175
 urn:prp-payout:g7E3pYw9sQMH					$66.531875
 urn:prp-payout:om2rVBexx1mc					$231.407903
 urn:prp-payout:quGzmnHRv2wD		Bohdan Hoy	0xCryptoGlorian		$108.857821
+urn:prp-payout:5nbkdmdstHYS					$73.971467
+urn:prp-payout:BDy1dN5sfFBx					$104.746334
+urn:prp-payout:DK1foXUBFAwF		Alex	Alex		$45.274475
+urn:prp-payout:CfJVYEHSbJXb					$1380.620584
+urn:prp-payout:SUKeX14y9nNk		Bohdan Hoy	0xCryptoGlorian		$100.361765
+urn:prp-payout:TSNwby68FgvQ					$793.398182
+urn:prp-payout:zBCce8o1QLVx					$78.228707
+urn:prp-payout:w1M3Gx1hJ5FB					$351.158494
