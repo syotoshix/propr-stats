@@ -100,6 +100,15 @@ def post_tweet(session, text, image_path=None):
     return resp.json()["data"]["id"]
 
 
+def post_reply(session, text, reply_to):
+    body = {"text": text, "reply": {"in_reply_to_tweet_id": reply_to}}
+    resp = session.post(f"{TWITTER_BASE}/tweets", json=body)
+    if not resp.ok:
+        print(f"Reply POST failed {resp.status_code}: {resp.text}")
+    resp.raise_for_status()
+    return resp.json()["data"]["id"]
+
+
 def format_payout_tweet(payouts, stats, small_payouts=None):
     from datetime import datetime, timezone
     total_paid = stats["totalPaid"]
@@ -113,8 +122,6 @@ def format_payout_tweet(payouts, stats, small_payouts=None):
             f"💸 @ProprXYZ just paid out ${float(payout['amount']):,.2f} USDC to a funded trader",
             "",
             f"⏱️ {date_str}",
-            "",
-            f"Tx: https://etherscan.io/tx/{payout['tx_hash']}",
         ]
     else:
         total_amount = sum(float(p["amount"]) for p in payouts)
@@ -126,7 +133,6 @@ def format_payout_tweet(payouts, stats, small_payouts=None):
             p_dt = datetime.fromisoformat(p["paid_at"].replace("Z", "+00:00")).astimezone(timezone.utc)
             p_date = f"{p_dt.strftime('%b')} {p_dt.day}, {p_dt.strftime('%H:%M UTC')}"
             lines.append(f"🔵 ${float(p['amount']):,.2f} USDC - ⏱️ {p_date}")
-            lines.append(f"Tx: https://etherscan.io/tx/{p['tx_hash']}")
             lines.append("")
         lines.append(f"Total: ${total_amount:,.2f} USDC 💰")
 
@@ -156,7 +162,9 @@ def _do_post(session, qualifying, all_payouts, stats, small_payouts=None):
         print(f"Image generation failed ({e}), using fallback")
         image_path = str(IMAGES_DIR / "payout.png")
     print(f"Posting payout tweet:\n{tweet}\n")
-    post_tweet(session, tweet, image_path)
+    tweet_id = post_tweet(session, tweet, image_path)
+    tx_lines = [f"Tx: https://etherscan.io/tx/{p['tx_hash']}" for p in qualifying]
+    post_reply(session, "\n".join(tx_lines), tweet_id)
 
 
 def combined_stats(new_processed, old_payouts):

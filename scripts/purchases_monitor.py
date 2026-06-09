@@ -81,12 +81,23 @@ def upload_media(session, image_path):
     return resp.json()["data"]["id"]
 
 
-def post_tweet(session, text, image_path):
+def post_tweet(session, text, image_path, reply_to=None):
     media_id = upload_media(session, image_path)
     body = {"text": text, "media": {"media_ids": [media_id]}}
+    if reply_to:
+        body["reply"] = {"in_reply_to_tweet_id": reply_to}
     resp = session.post(f"{TWITTER_BASE}/tweets", json=body)
     if not resp.ok:
         print(f"Tweet POST failed {resp.status_code}: {resp.text}")
+    resp.raise_for_status()
+    return resp.json()["data"]["id"]
+
+
+def post_reply(session, text, reply_to):
+    body = {"text": text, "reply": {"in_reply_to_tweet_id": reply_to}}
+    resp = session.post(f"{TWITTER_BASE}/tweets", json=body)
+    if not resp.ok:
+        print(f"Reply POST failed {resp.status_code}: {resp.text}")
     resp.raise_for_status()
     return resp.json()["data"]["id"]
 
@@ -120,13 +131,13 @@ def check_purchases(session):
     hours_display = round(hours_since)
     tweet = (
         f"${total_usdc:,.0f} in @ProprXYZ Challenge purchases in the last {hours_display}h! 💸\n\n"
-        f"Earn airdrop points through purchases, trading activity & more! \n\n"
-        f"Estimate your $PROPR allocation 👇\n"
-        f"http://liquidtradershub.com/propr-airdrop"
+        f"Earn airdrop points through purchases, trading activity & more!\n\n"
+        f"Estimate your $PROPR allocation 👇"
     )
 
     image_path = generate_image(grouped, total_usdc)
-    post_tweet(session, tweet, image_path)
+    tweet_id = post_tweet(session, tweet, image_path)
+    post_reply(session, "http://liquidtradershub.com/propr-airdrop", tweet_id)
     print(f"Posted: {tweet}")
 
     save_state(now)
