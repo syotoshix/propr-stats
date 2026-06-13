@@ -323,3 +323,4 @@ urn:prp-payout:fatWf3dnLMAz		Joaquin Freije	Freije		$181.357802
 urn:prp-payout:qL1VaHk6TsFA					$50.2032
 urn:prp-payout:x2jrW3f7FXku					$40.10365
 urn:prp-payout:k3muEyapNrqk					$217.329383
+urn:prp-payout:upNrLP9ASf7R		Bryan Rivera	i8Snow		$131.105142
