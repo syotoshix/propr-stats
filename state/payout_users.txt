@@ -342,3 +342,6 @@ urn:prp-payout:aMDfTd89vYms					$78.532323
 urn:prp-payout:d4z4KkLQiUgv		Bryan Rivera	i8Snow		$173.724896
 urn:prp-payout:NrN1NbfWjVUz					$388.286202
 urn:prp-payout:vx64zJwqM38q					$846.171835
+urn:prp-payout:f1trpZqCdjrn					$784.738822
+urn:prp-payout:f4Cxu7bYRZRg		Gring	gring		$445.671946
+urn:prp-payout:RrnM37JpqP4N					$367.771936
