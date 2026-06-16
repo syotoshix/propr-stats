@@ -353,3 +353,6 @@ urn:prp-payout:toofGLgWntJy					$91.81615
 urn:prp-payout:6CBn3iKKnHMr					$638.345199
 urn:prp-payout:mrmupXMdLUUq					$1013.176946
 urn:prp-payout:MwZ8tvGCX7JW					$334.494591
+urn:prp-payout:B4unpDyuxJ9z					$539.234638
+urn:prp-payout:HNhCKpe7fyTK		Bryan Rivera	i8Snow		$82.336943
+urn:prp-payout:x4EgQkoxk6Hi					$1750.591774
