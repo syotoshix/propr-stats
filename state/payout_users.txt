@@ -389,3 +389,8 @@ urn:prp-payout:dT16o9jd9jCp		Joaquin Freije	Freije		$627.949427
 urn:prp-payout:TH3qHxaLeEMd					$144.425052
 urn:prp-payout:Vz1vxwgg3Faz		Antonio Biz	PudgeMid		$52.945261
 urn:prp-payout:yXQLZvpKPq1M					$49.089283
+urn:prp-payout:hrNnEENCerAg					$219.586416
+urn:prp-payout:miJW5KjDtTmh					$1158.261014
+urn:prp-payout:MCAw1wUs7HX2		Antonio Biz	PudgeMid		$67.544904
+urn:prp-payout:Tjg99Cekncpo					$188.62522
+urn:prp-payout:txazeZFTAS7e		Bohdan Hoy	0xCryptoGlorian		$269.553538
