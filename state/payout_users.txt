@@ -394,3 +394,7 @@ urn:prp-payout:miJW5KjDtTmh					$1158.261014
 urn:prp-payout:MCAw1wUs7HX2		Antonio Biz	PudgeMid		$67.544904
 urn:prp-payout:Tjg99Cekncpo					$188.62522
 urn:prp-payout:txazeZFTAS7e		Bohdan Hoy	0xCryptoGlorian		$269.553538
+urn:prp-payout:BvspwRDrAAqe					$41.88856
+urn:prp-payout:BEW2HF5NejFe		Joaquin Freije	Freije		$328.578794
+urn:prp-payout:VGXvP4qgbr3z					$78.42401
+urn:prp-payout:WtAZYGcqoMvW		Super Mario	NoRugpullz		$791.031282
