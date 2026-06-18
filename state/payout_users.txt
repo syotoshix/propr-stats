@@ -425,3 +425,10 @@ urn:prp-payout:sKgPvMiWtK1j					$50.721374
 urn:prp-payout:TAfsrnvqJ3zg		Antonio Biz	PudgeMid		$58.608019
 urn:prp-payout:tK2xzKcLGfDz					$674.631923
 urn:prp-payout:UpVKV2LYzf6z					$26.674961
+urn:prp-payout:4N2WxmjYcNPU					$103.832455
+urn:prp-payout:g4y22zSMyRVT					$35.249094
+urn:prp-payout:MrRe5LJfFyFa					$34.108237
+urn:prp-payout:jx1eUDKbeceR					$2619.3749
+urn:prp-payout:pRQ7ubUPrbW9					$17.968503
+urn:prp-payout:UEvfAYQ4SAfH					$451.690418
+urn:prp-payout:uAD7VrCCd1kF					$469.743813
