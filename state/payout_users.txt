@@ -399,3 +399,7 @@ urn:prp-payout:BEW2HF5NejFe		Joaquin Freije	Freije		$328.578794
 urn:prp-payout:VGXvP4qgbr3z					$78.42401
 urn:prp-payout:WtAZYGcqoMvW		Super Mario	NoRugpullz		$791.031282
 urn:prp-payout:5iXpkStUY4vn					$745.186202
+urn:prp-payout:cRHdS9xfRhER					$88.084679
+urn:prp-payout:Hwiwc351QZs4					$63.34253
+urn:prp-payout:QTC46AU6DBp6					$149.097378
+urn:prp-payout:VYSb1UwZtVLG					$209.307685
