@@ -432,3 +432,7 @@ urn:prp-payout:jx1eUDKbeceR					$2619.3749
 urn:prp-payout:pRQ7ubUPrbW9					$17.968503
 urn:prp-payout:UEvfAYQ4SAfH					$451.690418
 urn:prp-payout:uAD7VrCCd1kF					$469.743813
+urn:prp-payout:DzUk2tobojPR					$261.956612
+urn:prp-payout:taYeUk6HyPzu					$26.383665
+urn:prp-payout:QqhhmS35UyyN		Jon	cryspybacon		$229.03779
+urn:prp-payout:PY1ALC1RPWEt					$90.124198
