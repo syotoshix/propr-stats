@@ -411,3 +411,17 @@ urn:prp-payout:1DCsCE4xceNm		Cristian	Baneo		$84.83488
 urn:prp-payout:cCQ1M8Qupq1s					$166.961511
 urn:prp-payout:j66yos23Uh1A					$47.197492
 urn:prp-payout:vzsquyhAoie3					$105.896102
+urn:prp-payout:6Yofk6LPtC5p					$97.890458
+urn:prp-payout:caCn677XhwVb					$92.433088
+urn:prp-payout:9iFuxNbHV6jV					$248.076027
+urn:prp-payout:bTvuXNSRVZis					$59.29731
+urn:prp-payout:D3JG8MawTsZf					$143.833087
+urn:prp-payout:ekNhNqpX5An8					$147.10867
+urn:prp-payout:Jry1GjJc87s6					$88.056847
+urn:prp-payout:mwxuJ8p2GFdZ					$133.569225
+urn:prp-payout:L2uerwtkgLXW					$37.324245
+urn:prp-payout:rZhw8Qci8o9W					$70.595248
+urn:prp-payout:sKgPvMiWtK1j					$50.721374
+urn:prp-payout:TAfsrnvqJ3zg		Antonio Biz	PudgeMid		$58.608019
+urn:prp-payout:tK2xzKcLGfDz					$674.631923
+urn:prp-payout:UpVKV2LYzf6z					$26.674961
