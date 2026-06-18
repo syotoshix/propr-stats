@@ -405,3 +405,9 @@ urn:prp-payout:QTC46AU6DBp6					$149.097378
 urn:prp-payout:VYSb1UwZtVLG					$209.307685
 urn:prp-payout:esnod1sZpw1d					$97.004626
 urn:prp-payout:pgZNXHwWytDq					$65.233566
+urn:prp-payout:5L4YemEtYHMi					$61.065211
+urn:prp-payout:6LBNuMC7bwoE					$56.792477
+urn:prp-payout:1DCsCE4xceNm		Cristian	Baneo		$84.83488
+urn:prp-payout:cCQ1M8Qupq1s					$166.961511
+urn:prp-payout:j66yos23Uh1A					$47.197492
+urn:prp-payout:vzsquyhAoie3					$105.896102
