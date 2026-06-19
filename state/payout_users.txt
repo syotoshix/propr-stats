@@ -451,3 +451,4 @@ urn:prp-payout:mKNB8kkKBaEm					$76.994234
 urn:prp-payout:nsQRW1kqZCn3		pinxi	SERO		$46.346246
 urn:prp-payout:rGHjbeQnk3td		Antonio Biz	PudgeMid		$39.951984
 urn:prp-payout:ApswZ2Paep81					$51.908695
+urn:prp-payout:ep4j98dRNen3					$21.575105
