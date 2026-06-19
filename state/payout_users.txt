@@ -446,3 +446,7 @@ urn:prp-payout:YJBF5mp5PLEa					$110.517787
 urn:prp-payout:CRHnK8uKmGVN		Joaquin Freije	Freije		$212.964255
 urn:prp-payout:uui5saZK1KjN					$30.540002
 urn:prp-payout:4teTjWVpYfP9					$17.421147
+urn:prp-payout:9dcWRmBRtRBh		Joaquin Freije	Freije		$181.035998
+urn:prp-payout:mKNB8kkKBaEm					$76.994234
+urn:prp-payout:nsQRW1kqZCn3		pinxi	SERO		$46.346246
+urn:prp-payout:rGHjbeQnk3td		Antonio Biz	PudgeMid		$39.951984
