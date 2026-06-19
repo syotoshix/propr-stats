@@ -438,3 +438,5 @@ urn:prp-payout:QqhhmS35UyyN		Jon	cryspybacon		$229.03779
 urn:prp-payout:PY1ALC1RPWEt					$90.124198
 urn:prp-payout:PhQsv9GcXH2s					$49.260082
 urn:prp-payout:P783aLVtvaty					$322.346293
+urn:prp-payout:b1d1WKF5N6XB					$108.667774
+urn:prp-payout:VMjyRa3tUm6N		Joaquin Freije	Freije		$20.744749
