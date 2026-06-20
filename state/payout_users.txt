@@ -464,3 +464,8 @@ urn:prp-payout:v3pMd8xfwHbP					$1002.531998
 urn:prp-payout:tw4vWpzYPPV4					$189.881596
 urn:prp-payout:uFzCY7bKiRn8					$128.203991
 urn:prp-payout:WHpLYs63We2E					$55.56241
+urn:prp-payout:8CUSAyJ8fEpr		Рома Котенко	DefeatedTiger#4186		$56.008274
+urn:prp-payout:crFRRYVYzJPM					$36.770433
+urn:prp-payout:Edh2rz99TmLC					$77.390645
+urn:prp-payout:rq8TNzHSzjBx		Usama Junaid	HolyMarmot#6770		$220.969294
+urn:prp-payout:zdnmajiiwbLB					$36.786051
