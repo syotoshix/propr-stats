@@ -469,3 +469,6 @@ urn:prp-payout:crFRRYVYzJPM					$36.770433
 urn:prp-payout:Edh2rz99TmLC					$77.390645
 urn:prp-payout:rq8TNzHSzjBx		Usama Junaid	HolyMarmot#6770		$220.969294
 urn:prp-payout:zdnmajiiwbLB					$36.786051
+urn:prp-payout:fgRNdL95NW4T					$754.255238
+urn:prp-payout:hji8yhKmdN3x					$808.1369
+urn:prp-payout:qARrA28qXGT1					$27.355865
