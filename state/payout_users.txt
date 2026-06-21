@@ -486,3 +486,4 @@ urn:prp-payout:3pmsfEdSVCac					$87.275793
 urn:prp-payout:jysUuT4XrioX					$31.090298
 urn:prp-payout:NCGw1rpAfcer		Bohdan Hoy	0xCryptoGlorian		$140.738406
 urn:prp-payout:SmxAR1MxuVWY					$114.101938
+urn:prp-payout:ePU3pzet9T1p		Joaquin Freije	Freije		$221.918628
