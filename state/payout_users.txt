@@ -476,3 +476,7 @@ urn:prp-payout:7QFwfLQ9qmC6					$25.00393
 urn:prp-payout:jb6SUU661c58					$19.401892
 urn:prp-payout:aPdkMB6aQzE8					$19.371509
 urn:prp-payout:3JVwZE6hQQtj					$16.942251
+urn:prp-payout:4NAWWJMLmZr2		Antonio Biz	PudgeMid		$32.783378
+urn:prp-payout:k8E9cek7DFHz					$116.729504
+urn:prp-payout:ZzpwyD6uo7Mv		Usama Junaid	HolyMarmot#6770		$127.862474
+urn:prp-payout:zi8UWYx3vxCz		Bohdan Hoy	0xCryptoGlorian		$196.174788
