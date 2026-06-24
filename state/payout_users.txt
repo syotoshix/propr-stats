@@ -522,3 +522,7 @@ urn:prp-payout:Hs7ANuJoijLo					$18.355526
 urn:prp-payout:19xGKuFwkbM6					$54.848838
 urn:prp-payout:WriWKB53nV1B					$95.694914
 urn:prp-payout:5j8J5pyQFMjG					$41.444498
+urn:prp-payout:e6jLUuwqELkx					$26.176339
+urn:prp-payout:ko4Fybf9pNPD					$134.552846
+urn:prp-payout:NRzfMmxT7jv3					$41.114723
+urn:prp-payout:qh3fikoTCnMG					$27.738618
