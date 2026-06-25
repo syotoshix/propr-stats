@@ -545,3 +545,5 @@ urn:prp-payout:a86UweEATz4Z					$137.700329
 urn:prp-payout:uwJ3LbvumMJY					$544.368218
 urn:prp-payout:ehTWrgfCNwLL		pinxi	SERO		$1066.699503
 urn:prp-payout:UT15SVSD5U2F		Jon	cryspybacon		$596.250182
+urn:prp-payout:KFNGMCHBSnBG					$76.168856
+urn:prp-payout:yeiEQTJ4vaJv					$58.01441
