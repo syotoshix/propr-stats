@@ -537,3 +537,4 @@ urn:prp-payout:BF6rwNZ6LWkq		Gring	gring		$77.911904
 urn:prp-payout:BYAyw4Toy6i9					$142.505302
 urn:prp-payout:dJyLTJiFnLmE					$26.641742
 urn:prp-payout:g3omicjTz1si					$28.676756
+urn:prp-payout:kaLEKfXEoCwm					$21.080155
