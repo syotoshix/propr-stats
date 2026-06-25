@@ -548,3 +548,5 @@ urn:prp-payout:UT15SVSD5U2F		Jon	cryspybacon		$596.250182
 urn:prp-payout:KFNGMCHBSnBG					$76.168856
 urn:prp-payout:yeiEQTJ4vaJv					$58.01441
 urn:prp-payout:ZK2oZTdZCRav					$63.056423
+urn:prp-payout:qxQYnNxgLimA		Gring	gring		$35.273207
+urn:prp-payout:TdpjfLgVtmMA		Gring	gring		$36.993014
