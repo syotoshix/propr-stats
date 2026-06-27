@@ -565,3 +565,5 @@ urn:prp-payout:qDtQHHVKAA8H					$45.514763
 urn:prp-payout:xNpzX1Xs9PQi					$2000.224618
 urn:prp-payout:bHE1LejTvWvd		Khanh Hung	Takeallmystakes		$17.794766
 urn:prp-payout:oLhkFEaHqVvM					$773.471259
+urn:prp-payout:oZNC5UxU4Uoa					$59.24892
+urn:prp-payout:Zhrsp6f79DwS		Gring	gring		$21.305426
