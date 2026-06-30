@@ -609,3 +609,4 @@ urn:prp-payout:egbkbhYTGzRQ					$34.140882
 urn:prp-payout:fWpbPWe87sKG					$2490.380222
 urn:prp-payout:gnrEvXfWmFAm					$43.842514
 urn:prp-payout:jRU1G6KaZ7oi					$606.625728
+urn:prp-payout:uE6NdZznAvYc		Bohdan Hoy	0xCryptoGlorian		$376.766645
