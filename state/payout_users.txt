@@ -610,3 +610,7 @@ urn:prp-payout:fWpbPWe87sKG					$2490.380222
 urn:prp-payout:gnrEvXfWmFAm					$43.842514
 urn:prp-payout:jRU1G6KaZ7oi					$606.625728
 urn:prp-payout:uE6NdZznAvYc		Bohdan Hoy	0xCryptoGlorian		$376.766645
+urn:prp-payout:gZWGQVPSidAm		Thomas 621	RemarkableCrawdad#1073		$304.13633
+urn:prp-payout:Kt4fRp7VCu3p					$265.619599
+urn:prp-payout:MuD5Dn6gCpJx					$91.742772
+urn:prp-payout:WkyUDfXBEM2H					$377.10756
